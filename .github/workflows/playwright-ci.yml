@@ -2,7 +2,7 @@ name: Playwright Scheduled Run
 
 on:
   schedule:
-    - cron: '35 00 * * *'   # ⏰ Runs every day at 14:30 UTC
+    - cron: '35 00 * * *'   # ⏰ Runs every day at 00:35 UTC
   workflow_dispatch:        # ✅ Optional: Manual trigger from GitHub UI
 
 jobs:
@@ -24,6 +24,8 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y libnss3 libatk-bridge2.0-0 libgtk-3-0 libxss1 libasound2t64 libgbm1 libxshmfence1
 
-    - name: Run Tests
-      run: |
-        ./gradlew test    # or `mvn test` if you're using Maven
+    - name: Verify Gradle is installed
+      run: gradle --version
+
+    - name: Run TestNG Tests using Gradle
+      run: gradle test
