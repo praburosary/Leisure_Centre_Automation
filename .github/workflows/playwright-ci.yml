@@ -27,5 +27,10 @@ jobs:
     - name: Verify Gradle is installed
       run: gradle --version
 
-    - name: Run TestNG Tests using Gradle
-      run: gradle test
+    - name: Grant execute permission to Gradle wrapper
+      run: chmod +x ./Leisure_Centre_Automation/gradlew
+
+    - name: Run TestNG Tests using Gradle Wrapper
+      run: ./gradlew test
+      working-directory: Leisure_Centre_Automation
+
