@@ -32,7 +32,7 @@ public class Booking {
     	
         // Initialize Playwright
         Playwright pw = Playwright.create();
-        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false));
+        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(true));
         Page page = browser.newPage();
         page.navigate("https://portal.everybody.org.uk/LhWeb/en/members/home/");
         page.waitForLoadState(LoadState.LOAD);
@@ -89,6 +89,7 @@ public class Booking {
         page.locator("text=Online Bookings").click();
         
 
+        page.waitForTimeout(2000);
         
         //handle the preferred site popup
         Locator applyButton1 = page.locator("button.xn-button.xn-cta", new Page.LocatorOptions().setHasText("Apply"));     
