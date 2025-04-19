@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Print GitHub Runner Time (UTC)
+      run: date -u
+    
     - name: Checkout Repository
       uses: actions/checkout@v3
 

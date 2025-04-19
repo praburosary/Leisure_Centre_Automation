@@ -32,7 +32,7 @@ public class Booking {
     	
         // Initialize Playwright
         Playwright pw = Playwright.create();
-        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(true));
+        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false));
         Page page = browser.newPage();
         page.navigate("https://portal.everybody.org.uk/LhWeb/en/members/home/");
         page.waitForLoadState(LoadState.LOAD);
@@ -107,7 +107,7 @@ public class Booking {
         page.waitForSelector("text=Sport Courts and Pitches", new Page.WaitForSelectorOptions().setTimeout(5000));
         page.locator("text=Sport Courts and Pitches").click();
 
-        page.fill("input[placeholder='Search activities']", "Badminton");
+        page.fill("input[placeholder='Search activities']", "Squash");
         page.click("#calendar");
 
         // Calculate current date + 8 days
