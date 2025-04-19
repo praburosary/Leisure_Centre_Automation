@@ -41,5 +41,5 @@ jobs:
 
     - name: Run TestNG Tests using Gradle Wrapper
       run: ./gradlew test
-      working-directory: Leisure_Centre_Automation
+      
 
