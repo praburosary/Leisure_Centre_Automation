@@ -20,16 +20,7 @@ public class Booking {
     @Test
     public void browser_actions() {
 
-        // Initialize Playwright
-        Playwright pw = Playwright.create();
-        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(true));
-        Page page = browser.newPage();
-        page.navigate("https://portal.everybody.org.uk/LhWeb/en/members/home/");
-        page.waitForLoadState(LoadState.LOAD);
-        page.waitForLoadState(LoadState.NETWORKIDLE);  // Wait until no network activity for 500ms
-        
-        
-        // Capture start time
+    	// Capture start time
         long startTime = System.currentTimeMillis();
         
      // Get current day and time in 24-hour format
@@ -37,12 +28,20 @@ public class Booking {
         DayOfWeek dayOfWeek = now.getDayOfWeek();
         String currentTime = now.format(DateTimeFormatter.ofPattern("HH:mm"));  // e.g., 14:30
         System.out.println("Today is: " + dayOfWeek + ", Current time: " + currentTime);
+
+    	
+        // Initialize Playwright
+        Playwright pw = Playwright.create();
+        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false));
+        Page page = browser.newPage();
+        page.navigate("https://portal.everybody.org.uk/LhWeb/en/members/home/");
+        page.waitForLoadState(LoadState.LOAD);
+        page.waitForLoadState(LoadState.NETWORKIDLE);  // Wait until no network activity for 500ms
         
-        String currentTime1 = now.format(DateTimeFormatter.ofPattern("HH:mm:ss"));  // e.g., 14:30
-        System.out.println("Today is: " + dayOfWeek + ", Current time1: " + currentTime1);
         
+                      
+        page.waitForTimeout(2000);
         
-        page.waitForTimeout(4000);
         //Accpet the cookies popup if present
         Locator yesRadio = page.locator("input[type='radio'][name='rbGoogle'][value='1']");
         Locator acceptButton = page.locator("button.xn-button.xn-cta", new Page.LocatorOptions().setHasText("Accept"));
@@ -77,41 +76,14 @@ public class Booking {
         } else {
             System.out.println("Apply button not found in Preferred site Popup");
         }
-
-
-
-
-       /*
-        
-        // Wait for the popup to appear
-        page.waitForSelector(".xn-options input[value='1']", new Page.WaitForSelectorOptions().setState(WaitForSelectorState.ATTACHED).setTimeout(5000));
-        page.click(".xn-options input[value='1']");
-
-        page.waitForSelector("span[data-bind='text: confirmationYes']", new Page.WaitForSelectorOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(5000));
-        page.click("span[data-bind='text: confirmationYes']");
-        
-        */
-
+      
+        //login details
         page.type("#xn-Username", "prabhureuben@gmail.com");
         page.type("#xn-Password", "Rosary08**");
         page.click("#login");
 
         page.waitForTimeout(4000);
-/*
-        try {
-            Locator popupClose = page.locator("xpath=(//div[@class='xn-close'])[2]");
-            if (popupClose.isVisible()) {
-                popupClose.click();
-                System.out.println("Clicked on the 2nd .xn-close popup.");
-            } else {
-                System.out.println("2nd .xn-close popup is not visible.");
-            }
-        } catch (Exception e) {
-            System.out.println("Error during 2nd popup close handling: " + e.getMessage());
-        }
 
-        
-        */
         
         page.waitForSelector("text=Online Bookings", new Page.WaitForSelectorOptions().setTimeout(5000));
         page.locator("text=Online Bookings").click();
@@ -134,12 +106,12 @@ public class Booking {
         page.waitForSelector("text=Sport Courts and Pitches", new Page.WaitForSelectorOptions().setTimeout(5000));
         page.locator("text=Sport Courts and Pitches").click();
 
-        page.fill("input[placeholder='Search activities']", "squash");
+        page.fill("input[placeholder='Search activities']", "Badminton");
         page.click("#calendar");
 
         // Calculate current date + 8 days
         LocalDate currentDate = LocalDate.now();
-        LocalDate targetDate = currentDate.plusDays(7);
+        LocalDate targetDate = currentDate.plusDays(8);
         int targetDay = targetDate.getDayOfMonth();
         String targetDateString = String.valueOf(targetDay);
 
@@ -151,12 +123,9 @@ public class Booking {
         LocalTime timeNow = LocalTime.parse(currentTime);
         System.out.println("End time " + timeNow);
         
-        System.out.println("End Time1" + now.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-        
-        String currentTime2 = now.format(DateTimeFormatter.ofPattern("HH:mm:ss"));  // e.g., 14:30
-        System.out.println("Today is: " + dayOfWeek + ", Current time2: " + currentTime2);
 
         /*
+        
         // Logic for slot selection based on day and time
         if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
             // For Fri-Sun, select the 13:30 slot only if time is between 13:30 and 14:30
@@ -181,11 +150,14 @@ public class Booking {
                 System.out.println("No slot selection matched for Mon-Thu.");
             }
         }
-*/
-        //delete this line
-        page.click("(//button[@class='xn-button xn-primary']/span[@data-bind='text: locationTypeSingular'])[8]");
+
+        */
         
         page.waitForTimeout(2000);
+        
+        page.click("(//button[@class='xn-button xn-primary']/span[@data-bind='text: locationTypeSingular'])[1]");  //delete this
+        
+        page.waitForTimeout(2000);  //delete this
 
         int[] selectionOrder = {7, 8, 6, 5, 3, 4, 2, 1};
         for (int courtNumber : selectionOrder) {
