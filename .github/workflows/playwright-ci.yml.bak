@@ -34,4 +34,8 @@ jobs:
     - name: Run TestNG Tests using Gradle Wrapper
       run: ./gradlew test
       
+     - name: View Gradle Test Logs
+      run: |
+        cat build/reports/tests/test/index.html   # View the test results HTML file
+        cat build/test-results/test/TEST-*.xml   # View the XML results if needed
 
