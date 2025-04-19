@@ -2,7 +2,7 @@ name: Playwright Scheduled Run
 
 on:
   schedule:
-    - cron: '02 18 * * *'   # ⏰ Runs
+    - cron: '40 18 * * *'   # ⏰ Runs
   workflow_dispatch:        # ✅ Optional: Manual trigger from GitHub UI
 
 jobs:
