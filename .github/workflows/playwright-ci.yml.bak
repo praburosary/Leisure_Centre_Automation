@@ -25,9 +25,6 @@ jobs:
         sudo apt-get install -y libnss3 libatk-bridge2.0-0 libgtk-3-0 libxss1 libasound2t64 libgbm1 libxshmfence1
 
 
-    - name: Verify Gradle is installed
-      run: gradle --version
-
     - name: Grant execute permission to Gradle wrapper
       run: chmod +x ./gradlew
 
