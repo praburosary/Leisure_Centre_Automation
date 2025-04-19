@@ -1,0 +1,29 @@
+name: Playwright Scheduled Run
+
+on:
+  schedule:
+    - cron: '30 14 * * *'   # ⏰ Runs every day at 14:30 UTC
+  workflow_dispatch:        # ✅ Optional: Manual trigger from GitHub UI
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Install Playwright Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libnss3 libatk-bridge2.0-0 libgtk-3-0 libxss1 libasound2 libgbm1 libxshmfence1
+
+    - name: Run Tests
+      run: |
+        ./gradlew test    # or `mvn test` if you're using Maven

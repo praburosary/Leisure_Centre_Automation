@@ -23,6 +23,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y libnss3 libatk-bridge2.0-0 libgtk-3-0 libxss1 libasound2t64 libgbm1 libxshmfence1
+<<<<<<< HEAD
 
     - name: Verify Gradle is installed
       run: gradle --version
@@ -34,3 +35,15 @@ jobs:
       run: ./gradlew test
       working-directory: Leisure_Centre_Automation
 
+=======
+
+    - name: Verify Gradle is installed
+      run: gradle --version
+
+    - name: Grant execute permission to Gradle wrapper
+      run: chmod +x ./Leisure_Centre_Automation/gradlew
+
+    - name: Run TestNG Tests using Gradle Wrapper
+      run: ./gradlew test
+      working-directory: Leisure_Centre_Automation
+>>>>>>> 9b4f64c (gradle updates)
