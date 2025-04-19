@@ -37,4 +37,7 @@ publishing {
 
 tasks.named('test') {
     useTestNG()
+	testLogging {
+        events "passed", "skipped", "failed" // Logs the results of passed, skipped, and failed tests
+    }
 }
