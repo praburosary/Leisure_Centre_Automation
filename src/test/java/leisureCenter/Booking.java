@@ -32,7 +32,7 @@ public class Booking {
     	
         // Initialize Playwright
         Playwright pw = Playwright.create();
-        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false));
+        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(true));
         Page page = browser.newPage();
         page.navigate("https://portal.everybody.org.uk/LhWeb/en/members/home/");
         page.waitForLoadState(LoadState.LOAD);
