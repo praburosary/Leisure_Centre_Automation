@@ -68,6 +68,8 @@ public class Booking {
         // Convert the string time into LocalTime in UK timezone
         LocalTime timeNow = LocalTime.parse(currentTime);
         
+        System.out.println("Time now is: " + timeNow);
+        
         if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY) {
         	if ((timeNow.equals(LocalTime.of(14, 30)) || timeNow.isAfter(LocalTime.of(14, 30))) && timeNow.isBefore(LocalTime.of(15, 30))) {
                 clickSelectCourtByTime(page, "14:30");
@@ -162,7 +164,7 @@ public class Booking {
            System.out.println("Current UK time: " + currentTimeStr);
 
            // Check if the current time matches 14:30, 15:30, or 16:30
-           if (currentTimeStr.equals("13:30") ||
+           if (currentTimeStr.equals("13:45") ||
                currentTimeStr.equals("15:30") ||
                currentTimeStr.equals("16:30")) {
                timeMatched = true; // Stop the loop after clicking
