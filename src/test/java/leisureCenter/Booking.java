@@ -63,6 +63,7 @@ public class Booking {
         String targetDateString = String.valueOf(targetDay);
         page.click("span.day-number:text('" + targetDateString + "')");       
         
+        WaitforExactTime();
         
         // Convert the string time into LocalTime in UK timezone
         LocalTime timeNow = LocalTime.parse(currentTime);
@@ -105,7 +106,7 @@ public class Booking {
         }
 
         
-        WaitforExactTime();
+        
         
         page.click("button.xn-button.xn-primary:has-text('Add to Basket')");
         page.waitForTimeout(2000);
@@ -161,7 +162,7 @@ public class Booking {
            System.out.println("Current UK time: " + currentTimeStr);
 
            // Check if the current time matches 14:30, 15:30, or 16:30
-           if (currentTimeStr.equals("12:30") ||
+           if (currentTimeStr.equals("12:50") ||
                currentTimeStr.equals("15:30") ||
                currentTimeStr.equals("16:30")) {
                timeMatched = true; // Stop the loop after clicking
