@@ -93,7 +93,7 @@ public class Booking {
         }
 
         
-        page.waitForTimeout(4000);
+        page.waitForTimeout(3000);
 
         int[] selectionOrder = {7, 8, 6, 5, 3, 4, 2, 1};
         for (int courtNumber : selectionOrder) {
