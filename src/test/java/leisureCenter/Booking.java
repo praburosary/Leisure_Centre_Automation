@@ -17,70 +17,7 @@ import com.microsoft.playwright.options.LoadState;
 
 public class Booking {
 
-    private void handlePreferredSitePopup(Page page) {
-        Locator applyButton = page.locator("button.xn-button.xn-cta", new Page.LocatorOptions().setHasText("Apply"));
-        if (applyButton.isVisible()) {
-            applyButton.click();
-        }
-    }
-
-    private void handleCookiesPopup(Page page) {
-        Locator yesRadio = page.locator("input[type='radio'][name='rbGoogle'][value='1']");
-        Locator acceptButton = page.locator("button.xn-button.xn-cta", new Page.LocatorOptions().setHasText("Accept"));
-        if (yesRadio.count() > 0 && yesRadio.isVisible()) {
-            yesRadio.check();
-        }
-
-        if (yesRadio.count() > 0 && yesRadio.isChecked()) {
-            if (acceptButton.count() > 0 && acceptButton.isVisible()) {
-                acceptButton.click();
-            }
-        }
-    }
-    
-    
-    private void WaitforExactTime() throws InterruptedException {
-
-   	 // Loop to check if the time is 14:30, 15:30 or 16:30, and click at the correct time
-       boolean timeMatched = false;
-       DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-       while (!timeMatched) {
-           // Get the current time in UK timezone
-           LocalTime currentLocalTime = LocalTime.now(ZoneId.of("Europe/London"));
-           String currentTimeStr = currentLocalTime.format(timeFormatter);
-           System.out.println("Current UK time: " + currentTimeStr);
-
-           // Check if the current time matches 14:30, 15:30, or 16:30
-           if (currentTimeStr.equals("14:30") ||
-               currentTimeStr.equals("15:30") ||
-               currentTimeStr.equals("16:30")) {
-               timeMatched = true; // Stop the loop after clicking
-               System.out.println("Time matched! Proceeding..."); // Added a confirmation message
-           } else {
-               // Wait for 2 seconds before checking again
-               System.out.println("Waiting for the correct time...");
-               Thread.sleep(1000);
-           }
-       }
-	}
-    
-    
-    
-    public static void clickSelectCourtByTime(Page page, String targetTime) {
-    	page.waitForTimeout(3000);
-        String selector = String.format(
-            "xpath=//li[.//div[@class='xn-booking-starttime' and contains(., '%s')]]//button[contains(., 'Select Court')]",
-            targetTime
-        );
-
-        Locator selectCourtButton = page.locator(selector);
-        if (selectCourtButton.count() > 0 && selectCourtButton.first().isVisible()) {
-            selectCourtButton.first().click();
-            System.out.println("Clicked 'Select Court' for time: " + targetTime);
-        } else {
-            System.out.println("'Select Court' button not found for time: " + targetTime);
-        }
-    }
+    //Author: Prabu Munuswamy || prabhureuben@gmail.com 
     
 
     @Test
@@ -143,8 +80,8 @@ public class Booking {
                 Assert.fail(errorMessage);
             }
         } else {
-        	if ((timeNow.equals(LocalTime.of(15, 30)) || timeNow.isAfter(LocalTime.of(15, 30))) && timeNow.isBefore(LocalTime.of(16, 30))) {
-        		clickSelectCourtByTime(page, "15:30");
+        	if ((timeNow.equals(LocalTime.of(11, 30)) || timeNow.isAfter(LocalTime.of(11, 30))) && timeNow.isBefore(LocalTime.of(12, 30))) {
+        		clickSelectCourtByTime(page, "11:30");
             } else if ((timeNow.equals(LocalTime.of(16, 30)) || timeNow.isAfter(LocalTime.of(16, 30))) && timeNow.isBefore(LocalTime.of(17, 30))) {
             	clickSelectCourtByTime(page, "16:30");
             } else {
@@ -186,5 +123,72 @@ public class Booking {
         }
 
         browser.close();
+    }
+    
+    
+    
+    private void handlePreferredSitePopup(Page page) {
+        Locator applyButton = page.locator("button.xn-button.xn-cta", new Page.LocatorOptions().setHasText("Apply"));
+        if (applyButton.isVisible()) {
+            applyButton.click();
+        }
+    }
+
+    private void handleCookiesPopup(Page page) {
+        Locator yesRadio = page.locator("input[type='radio'][name='rbGoogle'][value='1']");
+        Locator acceptButton = page.locator("button.xn-button.xn-cta", new Page.LocatorOptions().setHasText("Accept"));
+        if (yesRadio.count() > 0 && yesRadio.isVisible()) {
+            yesRadio.check();
+        }
+
+        if (yesRadio.count() > 0 && yesRadio.isChecked()) {
+            if (acceptButton.count() > 0 && acceptButton.isVisible()) {
+                acceptButton.click();
+            }
+        }
+    }
+    
+    
+    private void WaitforExactTime() throws InterruptedException {
+
+   	 // Loop to check if the time is 14:30, 15:30 or 16:30, and click at the correct time
+       boolean timeMatched = false;
+       DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+       while (!timeMatched) {
+           // Get the current time in UK timezone
+           LocalTime currentLocalTime = LocalTime.now(ZoneId.of("Europe/London"));
+           String currentTimeStr = currentLocalTime.format(timeFormatter);
+           System.out.println("Current UK time: " + currentTimeStr);
+
+           // Check if the current time matches 14:30, 15:30, or 16:30
+           if (currentTimeStr.equals("11:30") ||
+               currentTimeStr.equals("15:30") ||
+               currentTimeStr.equals("16:30")) {
+               timeMatched = true; // Stop the loop after clicking
+               System.out.println("Time matched! Proceeding..."); // Added a confirmation message
+           } else {
+               // Wait for 2 seconds before checking again
+               System.out.println("Waiting for the correct time...");
+               Thread.sleep(1000);
+           }
+       }
+	}
+    
+    
+    
+    public static void clickSelectCourtByTime(Page page, String targetTime) {
+    	page.waitForTimeout(3000);
+        String selector = String.format(
+            "xpath=//li[.//div[@class='xn-booking-starttime' and contains(., '%s')]]//button[contains(., 'Select Court')]",
+            targetTime
+        );
+
+        Locator selectCourtButton = page.locator(selector);
+        if (selectCourtButton.count() > 0 && selectCourtButton.first().isVisible()) {
+            selectCourtButton.first().click();
+            System.out.println("Clicked 'Select Court' for time: " + targetTime);
+        } else {
+            System.out.println("'Select Court' button not found for time: " + targetTime);
+        }
     }
 }
