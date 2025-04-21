@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType;
@@ -63,6 +64,24 @@ public class Booking {
        }
 	}
     
+    
+    
+    public static void clickSelectCourtByTime(Page page, String targetTime) {
+    	page.waitForTimeout(3000);
+        String selector = String.format(
+            "xpath=//li[.//div[@class='xn-booking-starttime' and contains(., '%s')]]//button[contains(., 'Select Court')]",
+            targetTime
+        );
+
+        Locator selectCourtButton = page.locator(selector);
+        if (selectCourtButton.count() > 0 && selectCourtButton.first().isVisible()) {
+            selectCourtButton.first().click();
+            System.out.println("Clicked 'Select Court' for time: " + targetTime);
+        } else {
+            System.out.println("'Select Court' button not found for time: " + targetTime);
+        }
+    }
+    
 
     @Test
     public void browser_actions() throws InterruptedException {
@@ -79,7 +98,7 @@ public class Booking {
         page.navigate("https://portal.everybody.org.uk/LhWeb/en/members/home/");
         page.waitForLoadState(LoadState.LOAD);
         page.waitForLoadState(LoadState.NETWORKIDLE);
-        page.waitForTimeout(2000);
+        page.waitForTimeout(4000);
 
         // Handle cookies and preferred site popups
         handleCookiesPopup(page);
@@ -110,26 +129,28 @@ public class Booking {
         
         // Convert the string time into LocalTime in UK timezone
         LocalTime timeNow = LocalTime.parse(currentTime);
-
-        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
-        	if ((timeNow.equals(LocalTime.of(13, 30)) || timeNow.isAfter(LocalTime.of(13, 30))) && timeNow.isBefore(LocalTime.of(14, 30))) {
-                page.click("(//button[@class='xn-button xn-primary']/span[@data-bind='text: locationTypeSingular'])[5]");
-            } else if ((timeNow.equals(LocalTime.of(14, 30)) || timeNow.isAfter(LocalTime.of(14, 30))) && timeNow.isBefore(LocalTime.of(15, 30))) {
-                page.click("(//button[@class='xn-button xn-primary']/span[@data-bind='text: locationTypeSingular'])[6]");
+        
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY) {
+        	if ((timeNow.equals(LocalTime.of(14, 30)) || timeNow.isAfter(LocalTime.of(14, 30))) && timeNow.isBefore(LocalTime.of(15, 30))) {
+                clickSelectCourtByTime(page, "14:30");
             } else if ((timeNow.equals(LocalTime.of(15, 30)) || timeNow.isAfter(LocalTime.of(15, 30))) && timeNow.isBefore(LocalTime.of(16, 30))) {
-                page.click("(//button[@class='xn-button xn-primary']/span[@data-bind='text: locationTypeSingular'])[7]");
+            	clickSelectCourtByTime(page, "15:30");
             } else if ((timeNow.equals(LocalTime.of(16, 30)) || timeNow.isAfter(LocalTime.of(16, 30))) && timeNow.isBefore(LocalTime.of(17, 30))) {
-                page.click("(//button[@class='xn-button xn-primary']/span[@data-bind='text: locationTypeSingular'])[8]");
+            	clickSelectCourtByTime(page, "16:30");
             } else {
-                System.out.println("No slot selection matched for Fri-Sun.");
+                String errorMessage = "No slot selection matched for Saturday and Sunday" + currentTime;
+                System.out.println(errorMessage);
+                Assert.fail(errorMessage);
             }
         } else {
         	if ((timeNow.equals(LocalTime.of(15, 30)) || timeNow.isAfter(LocalTime.of(15, 30))) && timeNow.isBefore(LocalTime.of(16, 30))) {
-                page.click("(//button[@class='xn-button xn-primary']/span[@data-bind='text: locationTypeSingular'])[7]");
+        		clickSelectCourtByTime(page, "15:30");
             } else if ((timeNow.equals(LocalTime.of(16, 30)) || timeNow.isAfter(LocalTime.of(16, 30))) && timeNow.isBefore(LocalTime.of(17, 30))) {
-                page.click("(//button[@class='xn-button xn-primary']/span[@data-bind='text: locationTypeSingular'])[8]");
+            	clickSelectCourtByTime(page, "16:30");
             } else {
-                System.out.println("No slot selection matched for Mon-Thu.");
+                String errorMessage = "No slot selection matched for Mon-Fri." + currentTime;
+                System.out.println(errorMessage);
+                Assert.fail(errorMessage);
             }
         }
 
