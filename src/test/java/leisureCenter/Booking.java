@@ -164,7 +164,7 @@ public class Booking {
            System.out.println("Current UK time: " + currentTimeStr);
 
            // Check if the current time matches 14:30, 15:30, or 16:30
-           if (currentTimeStr.equals("13:45") ||
+           if (currentTimeStr.equals("13:50") ||
                currentTimeStr.equals("15:30") ||
                currentTimeStr.equals("16:30")) {
                timeMatched = true; // Stop the loop after clicking
