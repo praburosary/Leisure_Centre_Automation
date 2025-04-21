@@ -107,12 +107,11 @@ public class Booking {
             }
         }
 
-        
-        
-        
+               
+        page.waitForTimeout(4000);
         page.click("button.xn-button.xn-primary:has-text('Add to Basket')");
         page.waitForTimeout(2000);
-        page.click("div.xn-icon");
+        page.hover("div.xn-icon");
         page.click("//a[@class='xn-button xn-cta']");
         page.waitForTimeout(2000);
         page.click("text=Pay Now");
