@@ -83,8 +83,8 @@ public class Booking {
                 Assert.fail(errorMessage);
             }
         } else {
-        	if ((timeNow.equals(LocalTime.of(13, 30)) || timeNow.isAfter(LocalTime.of(13, 30))) && timeNow.isBefore(LocalTime.of(14, 30))) {
-        		clickSelectCourtByTime(page, "13:30");
+        	if ((timeNow.equals(LocalTime.of(15, 30)) || timeNow.isAfter(LocalTime.of(15, 30))) && timeNow.isBefore(LocalTime.of(16, 30))) {
+        		clickSelectCourtByTime(page, "15:30");
             } else if ((timeNow.equals(LocalTime.of(16, 30)) || timeNow.isAfter(LocalTime.of(16, 30))) && timeNow.isBefore(LocalTime.of(17, 30))) {
             	clickSelectCourtByTime(page, "16:30");
             } else {
@@ -164,7 +164,7 @@ public class Booking {
            System.out.println("Current UK time: " + currentTimeStr);
 
            // Check if the current time matches 14:30, 15:30, or 16:30
-           if (currentTimeStr.equals("14:20") ||
+           if (currentTimeStr.equals("14:30") ||
                currentTimeStr.equals("15:30") ||
                currentTimeStr.equals("16:30")) {
                timeMatched = true; // Stop the loop after clicking
