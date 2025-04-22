@@ -113,7 +113,7 @@ public class Booking {
         }
 
                
-        page.waitForTimeout(4000);
+        page.waitForTimeout(1000);
         page.click("button.xn-button.xn-primary:has-text('Add to Basket')");
         page.waitForTimeout(2000);
         page.hover("div.xn-icon");
