@@ -6,8 +6,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Locator;
@@ -17,8 +21,7 @@ import com.microsoft.playwright.options.LoadState;
 
 public class Booking {
 
-    //Author: Prabu Munuswamy || prabhureuben@gmail.com 
-    
+    // Author: Prabu Munuswamy || prabhureuben@gmail.com 
 
     @Test
     public void browser_actions() throws InterruptedException {
@@ -37,11 +40,9 @@ public class Booking {
         page.waitForLoadState(LoadState.NETWORKIDLE);
         page.waitForTimeout(4000);
 
-        // Handle cookies and preferred site popups
         handleCookiesPopup(page);
         handlePreferredSitePopup(page);
 
-        // Login
         page.type("#xn-Username", "prabhureuben@gmail.com");
         page.type("#xn-Password", "Rosary08**");
         page.click("#login");
@@ -62,44 +63,34 @@ public class Booking {
         int targetDay = targetDate.getDayOfMonth();
         String targetDateString = String.valueOf(targetDay);
         page.click("span.day-number:text('" + targetDateString + "')");       
-        
+
         WaitforExactTime();
-        
-        // Convert the string time into LocalTime in UK timezone
-        LocalTime timeNow = LocalTime.parse(currentTime);
-        
-        System.out.println("Time now is: " + timeNow);
-        
-        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY) {
-        	if ((timeNow.equals(LocalTime.of(14, 30)) || timeNow.isAfter(LocalTime.of(14, 30))) && timeNow.isBefore(LocalTime.of(15, 30))) {
-                clickSelectCourtByTime(page, "14:30");
-            } else if ((timeNow.equals(LocalTime.of(15, 30)) || timeNow.isAfter(LocalTime.of(15, 30))) && timeNow.isBefore(LocalTime.of(16, 30))) {
-            	clickSelectCourtByTime(page, "15:30");
-            } else if ((timeNow.equals(LocalTime.of(16, 30)) || timeNow.isAfter(LocalTime.of(16, 30))) && timeNow.isBefore(LocalTime.of(17, 30))) {
-            	clickSelectCourtByTime(page, "16:30");
-            } else {
-                String errorMessage = "No slot selection matched for Saturday and Sunday" + currentTime;
-                System.out.println(errorMessage);
-                Assert.fail(errorMessage);
-            }
+
+        LocalTime timeNow = LocalTime.now(ZoneId.of("Europe/London"));
+        System.out.println("Current UK Time now is: " + timeNow);
+
+        if ((timeNow.equals(LocalTime.of(9, 30)) || timeNow.isAfter(LocalTime.of(9, 30))) && timeNow.isBefore(LocalTime.of(10, 30))) {
+            clickSelectCourtByTime(page, "09:30");
+        } else if ((timeNow.equals(LocalTime.of(10, 30)) || timeNow.isAfter(LocalTime.of(10, 30))) && timeNow.isBefore(LocalTime.of(11, 30))) {
+            clickSelectCourtByTime(page, "10:30");
+        } else if ((timeNow.equals(LocalTime.of(11, 30)) || timeNow.isAfter(LocalTime.of(11, 30))) && timeNow.isBefore(LocalTime.of(12, 30))) {
+            clickSelectCourtByTime(page, "11:30");
+        } else if ((timeNow.equals(LocalTime.of(12, 30)) || timeNow.isAfter(LocalTime.of(12, 30))) && timeNow.isBefore(LocalTime.of(13, 30))) {
+            clickSelectCourtByTime(page, "12:30");
+        } else if ((timeNow.equals(LocalTime.of(13, 30)) || timeNow.isAfter(LocalTime.of(13, 30))) && timeNow.isBefore(LocalTime.of(14, 30))) {
+            clickSelectCourtByTime(page, "13:30");
+        } else if ((timeNow.equals(LocalTime.of(14, 30)) || timeNow.isAfter(LocalTime.of(14, 30))) && timeNow.isBefore(LocalTime.of(15, 30))) {
+            clickSelectCourtByTime(page, "14:30");
+        } else if ((timeNow.equals(LocalTime.of(15, 30)) || timeNow.isAfter(LocalTime.of(15, 30))) && timeNow.isBefore(LocalTime.of(16, 30))) {
+            clickSelectCourtByTime(page, "15:30");
+        } else if ((timeNow.equals(LocalTime.of(16, 30)) || timeNow.isAfter(LocalTime.of(16, 30))) && timeNow.isBefore(LocalTime.of(17, 30))) {
+            clickSelectCourtByTime(page, "16:30");
         } else {
-        	if ((timeNow.equals(LocalTime.of(15, 30)) || timeNow.isAfter(LocalTime.of(15, 30))) && timeNow.isBefore(LocalTime.of(16, 30))) {
-        		clickSelectCourtByTime(page, "15:30");
-            } else if ((timeNow.equals(LocalTime.of(16, 30)) || timeNow.isAfter(LocalTime.of(16, 30))) && timeNow.isBefore(LocalTime.of(17, 30))) {
-            	clickSelectCourtByTime(page, "16:30");
-            }  else if ((timeNow.equals(LocalTime.of(13, 30)) || timeNow.isAfter(LocalTime.of(13, 30))) && timeNow.isBefore(LocalTime.of(14, 30))) {  //delete this
-            	clickSelectCourtByTime(page, "13:30");
-            }   else if ((timeNow.equals(LocalTime.of(14, 30)) || timeNow.isAfter(LocalTime.of(14, 30))) && timeNow.isBefore(LocalTime.of(15, 30))) {  //delete this
-            	clickSelectCourtByTime(page, "14:30");
-            }           
-            else {
-                String errorMessage = "No slot selection matched for Mon-Fri." + currentTime;
-                System.out.println(errorMessage);
-                Assert.fail(errorMessage);
-            }
+            String errorMessage = "No slot selection matched for the current time: " + currentTime;
+            System.out.println(errorMessage);
+            Assert.fail(errorMessage);
         }
 
-        
         page.waitForTimeout(3000);
 
         int[] selectionOrder = {7, 8, 6, 5, 3, 4, 2, 1};
@@ -112,7 +103,6 @@ public class Booking {
             }
         }
 
-               
         page.waitForTimeout(1000);
         page.click("button.xn-button.xn-primary:has-text('Add to Basket')");
         page.waitForTimeout(2000);
@@ -131,9 +121,7 @@ public class Booking {
 
         browser.close();
     }
-    
-    
-    
+
     private void handlePreferredSitePopup(Page page) {
         Locator applyButton = page.locator("button.xn-button.xn-cta", new Page.LocatorOptions().setHasText("Apply"));
         if (applyButton.isVisible()) {
@@ -154,38 +142,29 @@ public class Booking {
             }
         }
     }
-    
-    
+
     private void WaitforExactTime() throws InterruptedException {
+        List<String> validTimes = Arrays.asList("09:30", "10:30", "11:30", "12:30", "13:30", "14:3", "15:30", "16:30");
+        boolean timeMatched = false;
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-   	 // Loop to check if the time is 14:30, 15:30 or 16:30, and click at the correct time
-       boolean timeMatched = false;
-       DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-       while (!timeMatched) {
-           // Get the current time in UK timezone
-           LocalTime currentLocalTime = LocalTime.now(ZoneId.of("Europe/London"));
-           String currentTimeStr = currentLocalTime.format(timeFormatter);
-           System.out.println("Current UK time: " + currentTimeStr);
+        while (!timeMatched) {
+            LocalTime currentLocalTime = LocalTime.now(ZoneId.of("Europe/London"));
+            String currentTimeStr = currentLocalTime.format(timeFormatter);
+            System.out.println("Current UK time: " + currentTimeStr);
 
-           // Check if the current time matches 14:30, 15:30, or 16:30
-           if (currentTimeStr.equals("14:30") ||
-               currentTimeStr.equals("15:30") ||
-               currentTimeStr.equals("13:30") ||  //delete this
-               currentTimeStr.equals("16:30")) {
-               timeMatched = true; // Stop the loop after clicking
-               System.out.println("Time matched! Proceeding..."); // Added a confirmation message
-           } else {
-               // Wait for 2 seconds before checking again
-               System.out.println("Waiting for the correct time...");
-               Thread.sleep(1000);
-           }
-       }
-	}
-    
-    
-    
+            if (validTimes.contains(currentTimeStr)) {
+                timeMatched = true;
+                System.out.println("Time matched! Proceeding...");
+            } else {
+                System.out.println("Waiting for the correct time...");
+                Thread.sleep(1000);
+            }
+        }
+    }
+
     public static void clickSelectCourtByTime(Page page, String targetTime) {
-    	page.waitForTimeout(3000);
+        page.waitForTimeout(3000);
         String selector = String.format(
             "xpath=//li[.//div[@class='xn-booking-starttime' and contains(., '%s')]]//button[contains(., 'Select Court')]",
             targetTime
