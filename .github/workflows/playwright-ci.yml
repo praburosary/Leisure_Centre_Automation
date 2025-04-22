@@ -46,7 +46,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run TestNG Tests using Gradle Wrapper
-        run: ./gradlew test
+        run: ./gradlew test --info
 
       - name: View Gradle Test Logs
         if: always()
