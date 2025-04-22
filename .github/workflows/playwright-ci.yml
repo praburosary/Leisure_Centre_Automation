@@ -1,4 +1,4 @@
-name: Playwright Scheduled Run
+name: Leisure Centre Scheduled Run
 
 on:
   schedule:
