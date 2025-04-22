@@ -87,7 +87,12 @@ public class Booking {
         		clickSelectCourtByTime(page, "15:30");
             } else if ((timeNow.equals(LocalTime.of(16, 30)) || timeNow.isAfter(LocalTime.of(16, 30))) && timeNow.isBefore(LocalTime.of(17, 30))) {
             	clickSelectCourtByTime(page, "16:30");
-            } else {
+            }  else if ((timeNow.equals(LocalTime.of(13, 30)) || timeNow.isAfter(LocalTime.of(13, 30))) && timeNow.isBefore(LocalTime.of(14, 30))) {  //delete this
+            	clickSelectCourtByTime(page, "13:30");
+            }   else if ((timeNow.equals(LocalTime.of(14, 30)) || timeNow.isAfter(LocalTime.of(14, 30))) && timeNow.isBefore(LocalTime.of(15, 30))) {  //delete this
+            	clickSelectCourtByTime(page, "14:30");
+            }           
+            else {
                 String errorMessage = "No slot selection matched for Mon-Fri." + currentTime;
                 System.out.println(errorMessage);
                 Assert.fail(errorMessage);
@@ -165,6 +170,7 @@ public class Booking {
            // Check if the current time matches 14:30, 15:30, or 16:30
            if (currentTimeStr.equals("14:30") ||
                currentTimeStr.equals("15:30") ||
+               currentTimeStr.equals("13:30") ||  //delete this
                currentTimeStr.equals("16:30")) {
                timeMatched = true; // Stop the loop after clicking
                System.out.println("Time matched! Proceeding..."); // Added a confirmation message
