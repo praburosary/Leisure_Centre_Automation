@@ -2,7 +2,7 @@ name: Playwright Scheduled Run
 
 on:
   schedule:
-    # Friday and Saturday at 14:10 BST (13:10 UTC), 15:10 BST (14:10 UTC), and 16:10 BST (15:10 UTC)
+    # Friday and Saturday at 14:10 BST (13:01 UTC), 15:10 BST (14:10 UTC), and 16:10 BST (15:10 UTC)
     - cron: '01 13 * * 5,6'
     - cron: '01 14 * * 5,6'
     - cron: '01 15 * * 5,6'
@@ -41,13 +41,8 @@ jobs:
       - name: Grant execute permission to Gradle wrapper
         run: chmod +x ./gradlew
 
-      - name: Run TestNG Tests with Retry
-        uses: nick-invision/retry@v2
-        with:
-          timeout_minutes: 20
-          max_attempts: 3
-          retry_wait_seconds: 10
-          command: ./gradlew test
+      - name: Run TestNG Tests using Gradle Wrapper
+        run: ./gradlew test
 
       - name: View Gradle Test Logs
         if: always()

@@ -21,11 +21,10 @@ import com.microsoft.playwright.options.LoadState;
 
 public class Booking {
 
-    // Author: Prabu Munuswamy || prabhureuben@gmail.com 
+    // Author: Prabu Munuswamy || prabhureuben@gmail.com
 
     @Test
     public void browser_actions() throws InterruptedException {
-
         // Use UK time zone explicitly
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Europe/London"));
         DayOfWeek dayOfWeek = now.getDayOfWeek();
@@ -33,12 +32,13 @@ public class Booking {
         System.out.println("Today is: " + dayOfWeek + ", Current time: " + currentTime);
 
         Playwright pw = Playwright.create();
-        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(true));
+        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("msedge").setHeadless(false));
         Page page = browser.newPage();
+
         page.navigate("https://portal.everybody.org.uk/LhWeb/en/members/home/");
         page.waitForLoadState(LoadState.LOAD);
         page.waitForLoadState(LoadState.NETWORKIDLE);
-        page.waitForTimeout(4000);
+        page.waitForTimeout(2000);
 
         handleCookiesPopup(page);
         handlePreferredSitePopup(page);
@@ -62,7 +62,7 @@ public class Booking {
         LocalDate targetDate = LocalDate.now(ZoneId.of("Europe/London")).plusDays(8);
         int targetDay = targetDate.getDayOfMonth();
         String targetDateString = String.valueOf(targetDay);
-        page.click("span.day-number:text('" + targetDateString + "')");       
+        page.click("span.day-number:text('" + targetDateString + "')");
 
         WaitforExactTime();
 
@@ -103,11 +103,17 @@ public class Booking {
             }
         }
 
-        page.waitForTimeout(1000);
-        page.click("button.xn-button.xn-primary:has-text('Add to Basket')");
-        page.waitForTimeout(2000);
-        page.hover("div.xn-icon");
+        page.waitForTimeout(4000);
+
+        // Click on Add to Basket
+        page.click("(//button[@class='xn-button xn-mute']/following-sibling::button)[3]");
+
+        // Go to cart
+        page.click("(//div[@data-bind='event: {keypress: toggleBasket}, escapePressed: handleEscapeKeyPressed()']//div)[1]");
+
+        // Click on Checkout button
         page.click("//a[@class='xn-button xn-cta']");
+
         page.waitForTimeout(2000);
         page.click("text=Pay Now");
         page.waitForTimeout(6000);
@@ -144,7 +150,7 @@ public class Booking {
     }
 
     private void WaitforExactTime() throws InterruptedException {
-        List<String> validTimes = Arrays.asList("09:30", "10:30", "11:30", "12:30", "13:30", "14:3", "15:30", "16:30");
+        List<String> validTimes = Arrays.asList("09:30", "10:30", "11:30", "12:30", "13:30", "14:30", "15:30", "16:30");
         boolean timeMatched = false;
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
