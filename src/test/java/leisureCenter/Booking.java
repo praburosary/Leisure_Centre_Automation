@@ -105,15 +105,29 @@ public class Booking {
         }
 
         page.waitForTimeout(4000);
+        
+        
 
         // Click on Add to Basket
         page.click("(//button[@class='xn-button xn-mute']/following-sibling::button)[3]");
+        
+        
+        Locator ctaButton = page.locator("//a[@class='xn-button xn-cta']");
+        if (ctaButton.isVisible()) {
+            ctaButton.click();
+        } else {
+            page.click("(//div[@data-bind='event: {keypress: toggleBasket}, escapePressed: handleEscapeKeyPressed()']//div)[1]");
+            ctaButton.click();
+        }
+/*
 
         // Go to cart
         page.click("(//div[@data-bind='event: {keypress: toggleBasket}, escapePressed: handleEscapeKeyPressed()']//div)[1]");
 
         // Click on Checkout button
         page.click("//a[@class='xn-button xn-cta']");
+        
+        */
 
         page.waitForTimeout(2000);
         page.click("text=Pay Now");
@@ -151,7 +165,7 @@ public class Booking {
     }
 
     private void WaitforExactTime() throws InterruptedException {
-        List<String> validTimes = Arrays.asList("09:30", "10:30", "11:30", "12:30", "13:30", "14:30", "15:30", "16:30");
+        List<String> validTimes = Arrays.asList("09:30", "10:30", "11:30", "12:30", "13:50", "14:30", "15:30", "16:30");
         boolean timeMatched = false;
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
