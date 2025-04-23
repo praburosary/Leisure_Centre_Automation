@@ -165,7 +165,7 @@ public class Booking {
     }
 
     private void WaitforExactTime() throws InterruptedException {
-        List<String> validTimes = Arrays.asList("09:30", "10:30", "11:30", "12:30", "13:50", "14:30", "15:30", "16:30");
+        List<String> validTimes = Arrays.asList("09:30", "10:30", "11:30", "12:30", "13:58", "14:30", "15:30", "16:30");
         boolean timeMatched = false;
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
