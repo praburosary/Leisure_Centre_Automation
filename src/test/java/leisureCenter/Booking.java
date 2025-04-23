@@ -30,7 +30,7 @@ public class Booking {
         System.out.println("Today is: " + dayOfWeek + ", Current time: " + currentTime);
 
         Playwright pw = Playwright.create();
-        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("msedge").setHeadless(true));
+        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("msedge").setHeadless(false));
         Page page = browser.newPage();
 
         page.navigate("https://portal.everybody.org.uk/LhWeb/en/members/home/");
@@ -59,8 +59,11 @@ public class Booking {
 
         LocalDate targetDate = LocalDate.now(ZoneId.of("Europe/London")).plusDays(8);
         int targetDay = targetDate.getDayOfMonth();
-        String targetDateString = String.valueOf(targetDay);
-        page.click("span.day-number:text('" + targetDateString + "')");
+        //String targetDateString = String.valueOf(targetDay);
+        
+        selectCalendarDateByDayNumber(page, targetDay);
+        
+        //page.click("span.day-number:text('" + targetDateString + "')");
 
         WaitforExactTime();
 
@@ -182,4 +185,36 @@ public class Booking {
             System.out.println("'Select Court' button not found for time: " + targetTime);
         }
     }
+    
+    
+    
+    public static void selectCalendarDateByDayNumber(Page page, int targetDay) {
+        String dayString = String.valueOf(targetDay);
+        Locator targetDayElement = page.locator("span.day-number:text('" + dayString + "')");
+        Locator parentDayElement = targetDayElement.locator("xpath=.."); // Get the parent <td>
+        if (targetDayElement.count() > 0 && targetDayElement.first().isVisible()) {
+            String parentClass = parentDayElement.first().getAttribute("class");
+            boolean isDisabled = false;
+            // Check for common disabled classes (adjust based on your application)
+            if (parentClass != null && (parentClass.contains("disabled") || parentClass.contains("not-in-month") || parentClass.contains("unavailable") || parentClass.contains("off"))) {
+                isDisabled = true;
+            }
+            if (!isDisabled) {
+                targetDayElement.first().click();
+                System.out.println("Clicked on day: " + targetDay);
+            } else {
+                System.out.println("Day " + targetDay + " appears disabled and is not clickable.");
+                page.click(".next-month");
+                System.out.println("Day not found, clicked next month. Retrying for day: " + dayString);
+                targetDayElement.first().click();
+                
+            }
+        } else {
+            System.out.println("Day " + targetDay + " is either not present or not visible.");
+        }
+    }
+
+
+    
+    
 }
