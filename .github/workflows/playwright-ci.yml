@@ -55,3 +55,10 @@ jobs:
           cat build/reports/tests/test/index.html || echo "Report not found"
           echo "XML Test Results:"
           cat build/test-results/test/TEST-*.xml || echo "XML results not found"
+
+      - name: Upload Configuration Cache Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: configuration-cache-report
+          path: build/reports/configuration-cache/

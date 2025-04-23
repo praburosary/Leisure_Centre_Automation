@@ -221,7 +221,7 @@ public class Booking {
                 page.click(".next-month");
                 System.out.println("Day not found, clicked next month. Retrying for day: " + dayString);
                 targetDayElement.first().click();
-                
+                System.out.println("Selected the date: " + dayString);
             }
         } else {
             System.out.println("Day " + targetDay + " is either not present or not visible.");
