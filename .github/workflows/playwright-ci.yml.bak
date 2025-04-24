@@ -55,6 +55,13 @@ jobs:
           cat build/reports/tests/test/index.html || echo "Report not found"
           echo "XML Test Results:"
           cat build/test-results/test/TEST-*.xml || echo "XML results not found"
+      
+      - name: Upload TestNG Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: testng-report
+          path: build/reports/tests/testng
 
       - name: Upload Configuration Cache Report
         if: always()

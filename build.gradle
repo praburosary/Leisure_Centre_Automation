@@ -36,8 +36,11 @@ publishing {
 }
 
 tasks.named('test') {
-    useTestNG()
-	testLogging {
+    useTestNG() {
+        outputDirectory = file("$buildDir/reports/testng") // Explicitly set the output directory for TestNG reports
+    }
+    testLogging {
         events "passed", "skipped", "failed" // Logs the results of passed, skipped, and failed tests
+        reports.html.required = true // Ensure HTML reports are generated for Gradle's built-in reporting
     }
 }
