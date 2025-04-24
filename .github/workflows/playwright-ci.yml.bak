@@ -44,9 +44,12 @@ jobs:
 
       - name: Grant execute permission to Gradle wrapper
         run: chmod +x ./gradlew
+        
+      - name: Clean Build Directory
+        run: ./gradlew clean
 
       - name: Run TestNG Tests using Gradle Wrapper
-        run: ./gradlew test --info
+        run: ./gradlew test --stacktrace --info
 
       - name: View Gradle Test Logs
         if: always()
