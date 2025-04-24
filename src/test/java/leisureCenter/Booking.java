@@ -196,27 +196,50 @@ public class Booking {
     
     public static void selectCalendarDateByDayNumber(Page page, int targetDay) {
         String dayString = String.valueOf(targetDay);
-        Locator targetDayElement = page.locator("span.day-number:text('" + dayString + "')");
+        String dayXPath = String.format("//span[text()='%s']", dayString);
+        Locator targetDayElement = page.locator(dayXPath);
         Locator parentDayElement = targetDayElement.locator("xpath=.."); // Get the parent <td>
+        Locator nextMonthButton = page.locator(".next-month");
+
         if (targetDayElement.count() > 0 && targetDayElement.first().isVisible()) {
             String parentClass = parentDayElement.first().getAttribute("class");
             boolean isDisabled = false;
-            // Check for common disabled classes (adjust based on your application)
             if (parentClass != null && (parentClass.contains("disabled") || parentClass.contains("not-in-month") || parentClass.contains("unavailable") || parentClass.contains("off"))) {
                 isDisabled = true;
             }
             if (!isDisabled) {
                 targetDayElement.first().click();
-                System.out.println("Clicked on day: " + targetDay);
+                System.out.println("Clicked on day: " + targetDay + " in the current month.");
             } else {
-                System.out.println("Day " + targetDay + " appears disabled and is not clickable.");
-                page.click(".next-month");
-                System.out.println("Day not found, clicked next month. Retrying for day: " + dayString);
-                targetDayElement.first().click();
-                System.out.println("Selected the date: " + dayString);
+                System.out.println("Day " + targetDay + " appears disabled in the current month.");
+                nextMonthButton.click();
+                System.out.println("Clicked next month. Retrying for day: " + dayString);
+
+                // Re-locate the target day element using XPath after navigating to the next month
+                targetDayElement = page.locator(String.format("//span[text()='%s']", dayString));
+                parentDayElement = targetDayElement.locator("xpath=..");
+
+                // Wait for the target day to be visible in the next month
+                page.waitForSelector(String.format("//span[text()='%s']", dayString), new Page.WaitForSelectorOptions().setTimeout(3000));
+
+                if (targetDayElement.count() > 0 && targetDayElement.first().isVisible()) {
+                    String nextMonthParentClass = parentDayElement.first().getAttribute("class");
+                    boolean isNextMonthDisabled = false;
+                    if (nextMonthParentClass != null && (nextMonthParentClass.contains("disabled") || nextMonthParentClass.contains("not-in-month") || nextMonthParentClass.contains("unavailable") || nextMonthParentClass.contains("off"))) {
+                        isNextMonthDisabled = true;
+                    }
+                    if (!isNextMonthDisabled) {
+                        targetDayElement.first().click();
+                        System.out.println("Selected the date: " + dayString + " in the next month.");
+                    } else {
+                        System.out.println("Day " + dayString + " found but still disabled in the next month.");
+                    }
+                } else {
+                    System.out.println("Day " + dayString + " not found in the next month.");
+                }
             }
         } else {
-            System.out.println("Day " + targetDay + " is either not present or not visible.");
+            System.out.println("Day " + targetDay + " is either not present or not visible in the current month.");
         }
     }
 
