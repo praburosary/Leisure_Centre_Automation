@@ -177,7 +177,7 @@ public class Booking {
     }
 
     public static void clickSelectCourtByTime(Page page, String targetTime) {
-        page.waitForTimeout(3000);
+        page.waitForTimeout(6000);
         String selector = String.format(
             "xpath=//li[.//div[@class='xn-booking-starttime' and contains(., '%s')]]//button[contains(., 'Select Court')]",
             targetTime
