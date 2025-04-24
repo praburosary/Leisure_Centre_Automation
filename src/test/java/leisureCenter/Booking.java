@@ -65,24 +65,24 @@ public class Booking {
         
         //page.click("span.day-number:text('" + targetDateString + "')");
 
-        WaitforExactTime();
+        
 
         LocalTime timeNow = LocalTime.now(ZoneId.of("Europe/London"));
         System.out.println("Current UK Time now is: " + timeNow);
 
-        if ((timeNow.equals(LocalTime.of(9, 30)) || timeNow.isAfter(LocalTime.of(9, 30))) && timeNow.isBefore(LocalTime.of(10, 30))) {
+        if ((timeNow.equals(LocalTime.of(9, 01)) || timeNow.isAfter(LocalTime.of(9, 01))) && timeNow.isBefore(LocalTime.of(9, 30))) {
             clickSelectCourtByTime(page, "09:30");
-        } else if ((timeNow.equals(LocalTime.of(10, 30)) || timeNow.isAfter(LocalTime.of(10, 30))) && timeNow.isBefore(LocalTime.of(11, 30))) {
+        } else if ((timeNow.equals(LocalTime.of(10, 01)) || timeNow.isAfter(LocalTime.of(10, 01))) && timeNow.isBefore(LocalTime.of(10, 30))) {
             clickSelectCourtByTime(page, "10:30");
-        } else if ((timeNow.equals(LocalTime.of(11, 30)) || timeNow.isAfter(LocalTime.of(11, 30))) && timeNow.isBefore(LocalTime.of(12, 30))) {
+        } else if ((timeNow.equals(LocalTime.of(11, 01)) || timeNow.isAfter(LocalTime.of(11, 01))) && timeNow.isBefore(LocalTime.of(11, 30))) {
             clickSelectCourtByTime(page, "11:30");
-        } else if ((timeNow.equals(LocalTime.of(12, 30)) || timeNow.isAfter(LocalTime.of(12, 30))) && timeNow.isBefore(LocalTime.of(13, 30))) {
+        } else if ((timeNow.equals(LocalTime.of(12, 01)) || timeNow.isAfter(LocalTime.of(12, 01))) && timeNow.isBefore(LocalTime.of(12, 30))) {
             clickSelectCourtByTime(page, "12:30");
-        } else if ((timeNow.equals(LocalTime.of(13, 30)) || timeNow.isAfter(LocalTime.of(13, 30))) && timeNow.isBefore(LocalTime.of(14, 30))) {
+        } else if ((timeNow.equals(LocalTime.of(13, 01)) || timeNow.isAfter(LocalTime.of(13, 01))) && timeNow.isBefore(LocalTime.of(13, 30))) {
             clickSelectCourtByTime(page, "13:30");
-        } else if ((timeNow.equals(LocalTime.of(14, 30)) || timeNow.isAfter(LocalTime.of(14, 30))) && timeNow.isBefore(LocalTime.of(15, 30))) {
+        } else if ((timeNow.equals(LocalTime.of(14, 01)) || timeNow.isAfter(LocalTime.of(14, 01))) && timeNow.isBefore(LocalTime.of(14, 30))) {
             clickSelectCourtByTime(page, "14:30");
-        } else if ((timeNow.equals(LocalTime.of(15, 30)) || timeNow.isAfter(LocalTime.of(15, 30))) && timeNow.isBefore(LocalTime.of(16, 30))) {
+        } else if ((timeNow.equals(LocalTime.of(15, 01)) || timeNow.isAfter(LocalTime.of(15, 01))) && timeNow.isBefore(LocalTime.of(15, 30))) {
             clickSelectCourtByTime(page, "15:30");
         } else if ((timeNow.equals(LocalTime.of(16, 30)) || timeNow.isAfter(LocalTime.of(16, 30))) && timeNow.isBefore(LocalTime.of(17, 30))) {
             clickSelectCourtByTime(page, "16:30");
@@ -106,7 +106,7 @@ public class Booking {
 
         page.waitForTimeout(4000);
         
-        
+        WaitforExactTime();
 
         // Click on Add to Basket
         page.click("(//button[@class='xn-button xn-mute']/following-sibling::button)[3]");
@@ -119,15 +119,7 @@ public class Booking {
             page.click("(//div[@data-bind='event: {keypress: toggleBasket}, escapePressed: handleEscapeKeyPressed()']//div)[1]");
             ctaButton.click();
         }
-/*
 
-        // Go to cart
-        page.click("(//div[@data-bind='event: {keypress: toggleBasket}, escapePressed: handleEscapeKeyPressed()']//div)[1]");
-
-        // Click on Checkout button
-        page.click("//a[@class='xn-button xn-cta']");
-        
-        */
 
         page.waitForTimeout(2000);
         page.click("text=Pay Now");
