@@ -2,19 +2,7 @@ name: Leisure Centre Scheduled Run
 
 on:
   schedule:
-    # Friday and Saturday at 14:10 BST (13:01 UTC), 15:10 BST (14:10 UTC), and 16:10 BST (15:10 UTC)
-    - cron: '01 13 * * 5,6'
-    - cron: '01 14 * * 5,6'
-    - cron: '01 15 * * 5,6'
-    # Sunday to Thursday at 15:10 BST (14:10 UTC) and 16:10 BST (15:10 UTC)
-    - cron: '01 08 * * 0,1,2,3,4'
-    - cron: '01 09 * * 0,1,2,3,4'
-    - cron: '01 10 * * 0,1,2,3,4'
-    - cron: '01 11 * * 0,1,2,3,4'
-    - cron: '01 12 * * 0,1,2,3,4'
-    - cron: '01 13 * * 0,1,2,3,4'
-    - cron: '01 14 * * 0,1,2,3,4'
-    - cron: '01 15 * * 0,1,2,3,4'
+    # ... your cron schedules ...
   workflow_dispatch:
 
 jobs:
@@ -45,23 +33,30 @@ jobs:
       - name: Grant execute permission to Gradle wrapper
         run: chmod +x ./gradlew
 
-      - name: Run TestNG Tests using Gradle Wrapper
-        run: ./gradlew test --info
+      - name: Clean Build Directory
+        run: ./gradlew clean
+
+      - name: Run TestNG Tests using Gradle Wrapper (Verbose)
+        run: ./gradlew test --stacktrace --info
+
+      - name: List build/reports/tests Contents
+        if: always()
+        run: ls -R build/reports/tests
 
       - name: View Gradle Test Logs
         if: always()
         run: |
-          echo "Index Report File:"
-          cat build/reports/tests/test/index.html || echo "Report not found"
+          echo "Gradle Test Report (index.html):"
+          cat build/reports/tests/test/index.html || echo "Gradle basic report not found"
           echo "XML Test Results:"
           cat build/test-results/test/TEST-*.xml || echo "XML results not found"
-      
+
       - name: Upload TestNG Report
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: testng-report
-          path: build/reports/testng
+          path: build/reports/tests/testng
 
       - name: Upload Configuration Cache Report
         if: always()

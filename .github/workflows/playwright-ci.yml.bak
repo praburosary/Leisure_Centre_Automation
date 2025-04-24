@@ -61,7 +61,7 @@ jobs:
         if: always()
         with:
           name: testng-report
-          path: build/reports/tests/testng
+          path: build/reports/testng
 
       - name: Upload Configuration Cache Report
         if: always()
