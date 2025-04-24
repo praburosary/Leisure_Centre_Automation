@@ -44,7 +44,7 @@ public class Booking {
         page.type("#xn-Username", "prabhureuben@gmail.com");
         page.type("#xn-Password", "Rosary08**");
         page.click("#login");
-        page.waitForTimeout(4000);
+        page.waitForTimeout(6000);
 
         page.waitForSelector("text=Online Bookings", new Page.WaitForSelectorOptions().setTimeout(5000));
         page.locator("text=Online Bookings").click();
@@ -84,7 +84,7 @@ public class Booking {
             clickSelectCourtByTime(page, "14:30");
         } else if ((timeNow.equals(LocalTime.of(15, 01)) || timeNow.isAfter(LocalTime.of(15, 01))) && timeNow.isBefore(LocalTime.of(15, 30))) {
             clickSelectCourtByTime(page, "15:30");
-        } else if ((timeNow.equals(LocalTime.of(16, 30)) || timeNow.isAfter(LocalTime.of(16, 30))) && timeNow.isBefore(LocalTime.of(17, 30))) {
+        } else if ((timeNow.equals(LocalTime.of(16, 01)) || timeNow.isAfter(LocalTime.of(16, 01))) && timeNow.isBefore(LocalTime.of(17, 30))) {
             clickSelectCourtByTime(page, "16:30");
         } else {
             String errorMessage = "No slot selection matched for the current time: " + currentTime;
