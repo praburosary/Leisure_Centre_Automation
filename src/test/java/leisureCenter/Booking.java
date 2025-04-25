@@ -67,8 +67,6 @@ public class Booking {
             System.out.println("'Online Bookings' element not found or not visible.");
         }
 
-
-        
         
         page.waitForTimeout(2000);
         handlePreferredSitePopup(page);
@@ -80,15 +78,9 @@ public class Booking {
         page.click("#calendar");
 
         LocalDate targetDate = LocalDate.now(ZoneId.of("Europe/London")).plusDays(8);
-        int targetDay = targetDate.getDayOfMonth();
-        //String targetDateString = String.valueOf(targetDay);
-        
+        int targetDay = targetDate.getDayOfMonth();        
         selectCalendarDateByDayNumber(page, targetDay);
         
-        //page.click("span.day-number:text('" + targetDateString + "')");
-
-        
-
         LocalTime timeNow = LocalTime.now(ZoneId.of("Europe/London"));
         System.out.println("Current UK Time now is: " + timeNow);
 
@@ -136,19 +128,7 @@ public class Booking {
 
         proceedToCheckout(page);
         
-        /*
-        Locator ctaButton = page.locator("//a[@class='xn-button xn-cta']");
-        if (ctaButton.isVisible()) {
-        	System.out.println("Clicked on 'Check-Out' button - is successful");
-            ctaButton.click();
-        } else {
-            //Hovering over the cart and then clicking
-            page.click("(//div[@data-bind='event: {keypress: toggleBasket}, escapePressed: handleEscapeKeyPressed()']//div)[1]");
-            ctaButton.click();
-            System.out.println("Hovered over the Cart and clicked on Check-OUt button - is successful");
-        }
-
-*/
+       
         page.waitForTimeout(2000);
         page.click("text=Pay Now");
         System.out.println("Click on 'Pay Now' - is successful");
