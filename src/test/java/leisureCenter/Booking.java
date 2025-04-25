@@ -132,18 +132,22 @@ public class Booking {
         // Click on Add to Basket
         page.click("(//button[@class='xn-button xn-mute']/following-sibling::button)[3]");
         
-        
+
         Locator ctaButton = page.locator("//a[@class='xn-button xn-cta']");
         if (ctaButton.isVisible()) {
+        	System.out.println("Clicked on 'Check-Out' button - is successful");
             ctaButton.click();
         } else {
+            //Hovering over the cart and then clicking
             page.click("(//div[@data-bind='event: {keypress: toggleBasket}, escapePressed: handleEscapeKeyPressed()']//div)[1]");
             ctaButton.click();
+            System.out.println("Hovered over the Cart and clicked on Check-OUt button - is successful");
         }
 
 
         page.waitForTimeout(2000);
         page.click("text=Pay Now");
+        System.out.println("Click on 'Pay Now' - is successful");
         page.waitForTimeout(6000);
 
         Locator confirmationText = page.locator("h1.xn-title");
