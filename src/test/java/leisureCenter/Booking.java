@@ -16,6 +16,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.options.LoadState;
+import com.microsoft.playwright.options.WaitForSelectorState;
 
 public class Booking {
 
@@ -133,6 +134,9 @@ public class Booking {
         page.click("(//button[@class='xn-button xn-mute']/following-sibling::button)[3]");
         
 
+        proceedToCheckout(page);
+        
+        /*
         Locator ctaButton = page.locator("//a[@class='xn-button xn-cta']");
         if (ctaButton.isVisible()) {
         	System.out.println("Clicked on 'Check-Out' button - is successful");
@@ -144,7 +148,7 @@ public class Booking {
             System.out.println("Hovered over the Cart and clicked on Check-OUt button - is successful");
         }
 
-
+*/
         page.waitForTimeout(2000);
         page.click("text=Pay Now");
         System.out.println("Click on 'Pay Now' - is successful");
@@ -269,6 +273,35 @@ public class Booking {
     }
 
 
+    
+    public static void proceedToCheckout(Page page) {
+        Locator ctaButton = page.locator("//a[@class='xn-button xn-cta']");
+
+        if (ctaButton.isVisible()) {
+            ctaButton.click();
+            System.out.println("Clicked on 'Check-Out' button - is successful");
+        } else {
+            System.out.println("'Check-Out' button not visible initially. Trying to reveal...");
+
+            // Click on cart icon to attempt revealing the checkout button
+            page.click("(//div[@data-bind='event: {keypress: toggleBasket}, escapePressed: handleEscapeKeyPressed()']//div)[1]");
+
+            // Wait for visibility
+            ctaButton.waitFor(new Locator.WaitForOptions()
+                .setState(WaitForSelectorState.VISIBLE)
+                .setTimeout(5000));
+
+            if (ctaButton.isVisible()) {
+                ctaButton.click();
+                System.out.println("Hovered over the cart and clicked on 'Check-Out' button - is successful");
+            } else {
+                System.out.println("Check-Out button still not visible after cart interaction");
+            }
+        }
+    }
+
+    
+    
     
     
 }
