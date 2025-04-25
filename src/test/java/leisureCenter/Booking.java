@@ -30,7 +30,7 @@ public class Booking {
         System.out.println("Today is: " + dayOfWeek + ", Current time: " + currentTime);
 
         Playwright pw = Playwright.create();
-        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("msedge").setHeadless(true));
+        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("msedge").setHeadless(false));
         Page page = browser.newPage();
 
         page.navigate("https://portal.everybody.org.uk/LhWeb/en/members/home/");
@@ -45,9 +45,30 @@ public class Booking {
         page.type("#xn-Password", "Rosary08**");
         page.click("#login");
         page.waitForTimeout(6000);
+        
+        //confirm Login
+        Locator loginHeader = page.locator("//h1[@class='xn-title']");
 
+        if (loginHeader.count() > 0 && loginHeader.first().isVisible()) {
+            System.out.println("Login is successful");
+        } else {
+            System.out.println("Login is NOT successful");
+        }
+
+
+        //click on Online Bookings and confirm
         page.waitForSelector("text=Online Bookings", new Page.WaitForSelectorOptions().setTimeout(5000));
-        page.locator("text=Online Bookings").click();
+        Locator onlineBookings = page.locator("text=Online Bookings");
+        if (onlineBookings.count() > 0 && onlineBookings.first().isVisible()) {
+            onlineBookings.click();
+            System.out.println("Clicked on 'Online Bookings'");
+        } else {
+            System.out.println("'Online Bookings' element not found or not visible.");
+        }
+
+
+        
+        
         page.waitForTimeout(2000);
         handlePreferredSitePopup(page);
 
