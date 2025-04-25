@@ -144,14 +144,14 @@ public class Booking {
         browser.close();
     }
 
-    private void handlePreferredSitePopup(Page page) {
+    public void handlePreferredSitePopup(Page page) {
         Locator applyButton = page.locator("button.xn-button.xn-cta", new Page.LocatorOptions().setHasText("Apply"));
         if (applyButton.isVisible()) {
             applyButton.click();
         }
     }
 
-    private void handleCookiesPopup(Page page) {
+    public void handleCookiesPopup(Page page) {
         Locator yesRadio = page.locator("input[type='radio'][name='rbGoogle'][value='1']");
         Locator acceptButton = page.locator("button.xn-button.xn-cta", new Page.LocatorOptions().setHasText("Accept"));
         if (yesRadio.count() > 0 && yesRadio.isVisible()) {
@@ -165,7 +165,7 @@ public class Booking {
         }
     }
 
-    private void WaitforExactTime() throws InterruptedException {
+    public void WaitforExactTime() throws InterruptedException {
         List<String> validTimes = Arrays.asList("09:30", "10:30", "11:30", "12:30", "13:30", "14:30", "15:30", "16:30");
         boolean timeMatched = false;
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
