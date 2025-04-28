@@ -84,24 +84,24 @@ public class Booking {
         LocalTime timeNow = LocalTime.now(ZoneId.of("Europe/London"));
         System.out.println("Current UK Time now is: " + timeNow);
 
-        if ((timeNow.equals(LocalTime.of(9, 01)) || timeNow.isAfter(LocalTime.of(9, 01))) && timeNow.isBefore(LocalTime.of(9, 30))) {
+        if (timeNow.isAfter(LocalTime.of(8, 39)) && timeNow.isBefore(LocalTime.of(9, 30))) {
             clickSelectCourtByTime(page, "09:30");
-        } else if ((timeNow.equals(LocalTime.of(10, 01)) || timeNow.isAfter(LocalTime.of(10, 01))) && timeNow.isBefore(LocalTime.of(10, 30))) {
+        } else if (timeNow.isAfter(LocalTime.of(9, 39)) && timeNow.isBefore(LocalTime.of(10, 30))) {
             clickSelectCourtByTime(page, "10:30");
-        } else if ((timeNow.equals(LocalTime.of(11, 01)) || timeNow.isAfter(LocalTime.of(11, 01))) && timeNow.isBefore(LocalTime.of(11, 30))) {
+        } else if (timeNow.isAfter(LocalTime.of(10, 39)) && timeNow.isBefore(LocalTime.of(11, 30))) {
             clickSelectCourtByTime(page, "11:30");
-        } else if ((timeNow.equals(LocalTime.of(12, 01)) || timeNow.isAfter(LocalTime.of(12, 01))) && timeNow.isBefore(LocalTime.of(12, 30))) {
+        } else if (timeNow.isAfter(LocalTime.of(11, 39)) && timeNow.isBefore(LocalTime.of(12, 30))) {
             clickSelectCourtByTime(page, "12:30");
-        } else if ((timeNow.equals(LocalTime.of(13, 01)) || timeNow.isAfter(LocalTime.of(13, 01))) && timeNow.isBefore(LocalTime.of(13, 30))) {
+        } else if (timeNow.isAfter(LocalTime.of(12, 39)) && timeNow.isBefore(LocalTime.of(13, 30))) {
             clickSelectCourtByTime(page, "13:30");
-        } else if ((timeNow.equals(LocalTime.of(14, 01)) || timeNow.isAfter(LocalTime.of(14, 01))) && timeNow.isBefore(LocalTime.of(14, 30))) {
+        } else if (timeNow.isAfter(LocalTime.of(13, 39)) && timeNow.isBefore(LocalTime.of(14, 30))) {
             clickSelectCourtByTime(page, "14:30");
-        } else if ((timeNow.equals(LocalTime.of(15, 01)) || timeNow.isAfter(LocalTime.of(15, 01))) && timeNow.isBefore(LocalTime.of(15, 30))) {
+        } else if (timeNow.isAfter(LocalTime.of(14, 39)) && timeNow.isBefore(LocalTime.of(15, 30))) {
             clickSelectCourtByTime(page, "15:30");
-        } else if ((timeNow.equals(LocalTime.of(16, 01)) || timeNow.isAfter(LocalTime.of(16, 01))) && timeNow.isBefore(LocalTime.of(17, 30))) {
+        } else if (timeNow.isAfter(LocalTime.of(15, 39)) && timeNow.isBefore(LocalTime.of(16, 30))) {
             clickSelectCourtByTime(page, "16:30");
         } else {
-            String errorMessage = "No slot selection matched for the current time: " + currentTime;
+            String errorMessage = "No slot selection matched for the current time: " + timeNow;
             System.out.println(errorMessage);
             Assert.fail(errorMessage);
         }
