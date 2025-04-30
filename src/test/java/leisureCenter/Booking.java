@@ -16,6 +16,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.options.LoadState;
+import com.microsoft.playwright.options.SelectOption;
 import com.microsoft.playwright.options.WaitForSelectorState;
 
 public class Booking {
@@ -46,6 +47,17 @@ public class Booking {
         page.type("#xn-Password", "Rosary08**");
         page.click("#login");
         page.waitForTimeout(6000);
+        
+        
+        //close Location alert
+        Locator closeIcon = page.locator("(//div[@class='xn-close'])[2]");
+
+        if (closeIcon.count() > 0 && closeIcon.first().isVisible()) {
+            closeIcon.first().click();
+            System.out.println("Clicked the second 'xn-close' icon.");
+        } 
+
+        
         
         //confirm Login
         Locator loginHeader = page.locator("//h1[@class='xn-title']");
@@ -147,6 +159,14 @@ public class Booking {
     private void handlePreferredSitePopup(Page page) {
         Locator applyButton = page.locator("button.xn-button.xn-cta", new Page.LocatorOptions().setHasText("Apply"));
         if (applyButton.isVisible()) {
+        	
+        	// Locate the dropdown using its ID
+        	Locator siteDropdown = page.locator("#xn-site-selector");
+        	// Select the option by visible text
+        	siteDropdown.selectOption(new SelectOption().setLabel("Macclesfield Leisure Centre"));
+
+        	System.out.println("Selected site: Macclesfield Leisure Centre");
+
             applyButton.click();
         }
     }
