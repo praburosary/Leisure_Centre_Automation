@@ -69,7 +69,18 @@ public class Booking {
             System.out.println("Login is NOT successful");
         }
 
+        handleCookiesPopup(page);
+        
+        handlePreferredSitePopup(page);
+        
+      //close Location alert
+        Locator closeIcon1 = page.locator("(//div[@class='xn-close'])[2]");
 
+        if (closeIcon1.count() > 0 && closeIcon1.first().isVisible()) {
+            closeIcon1.first().click();
+            System.out.println("Closed the location alert updates1");
+        } 
+        
         //click on Online Bookings and confirm
         page.waitForSelector("text=Online Bookings", new Page.WaitForSelectorOptions().setTimeout(5000));
         Locator onlineBookings = page.locator("text=Online Bookings");
