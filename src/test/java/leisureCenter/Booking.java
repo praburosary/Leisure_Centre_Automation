@@ -1,5 +1,7 @@
 package leisureCenter;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,6 +27,9 @@ public class Booking {
 
     @Test
     public void browser_actions() throws InterruptedException {
+
+    	
+    	
         // Use UK time zone explicitly
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Europe/London"));
         DayOfWeek dayOfWeek = now.getDayOfWeek();
@@ -34,6 +39,13 @@ public class Booking {
         Playwright pw = Playwright.create();
         Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("msedge").setHeadless(true));
         Page page = browser.newPage();
+        
+        
+        //String directoryName = "Screenshot";
+        // Prepare the screenshot directory
+        prepareScreenshotDirectory("Screenshot");
+
+
 
         page.navigate("https://portal.everybody.org.uk/LhWeb/en/members/home/");
         page.waitForLoadState(LoadState.LOAD);
@@ -56,6 +68,7 @@ public class Booking {
 
         if (loginHeader.count() > 0 && loginHeader.first().isVisible()) {
             System.out.println("Login is successful");
+            takeScreenshot(page, "Screenshot", "login_successful.png");
         } else {
             System.out.println("Login is NOT successful");
         }
@@ -67,7 +80,7 @@ public class Booking {
         closeLocationAlert(page);
 
         //click on Online Bookings and confirm
-        page.waitForSelector("text=Online Bookings", new Page.WaitForSelectorOptions().setTimeout(5000));
+        page.waitForSelector("text=Online Bookings", new Page.WaitForSelectorOptions().setTimeout(10000));
         Locator onlineBookings = page.locator("text=Online Bookings");
         if (onlineBookings.count() > 0 && onlineBookings.first().isVisible()) {
             onlineBookings.click();
@@ -82,7 +95,7 @@ public class Booking {
         
         closeLocationAlert(page);
 
-        page.waitForSelector("text=Sport Courts and Pitches", new Page.WaitForSelectorOptions().setTimeout(5000));
+        page.waitForSelector("text=Sport Courts and Pitches", new Page.WaitForSelectorOptions().setTimeout(10000));
         page.locator("text=Sport Courts and Pitches").click();
         System.out.println("Sport Courts and Pitches button successfully");
 
@@ -126,6 +139,7 @@ public class Booking {
             Locator radioButton = page.locator("input[type='radio'][value='" + courtNumber + "']");
             if (radioButton.isVisible()) {
                 radioButton.click();
+                takeScreenshot(page, "Screenshot", "Court_selected.png");
                 System.out.println("Clicked on Court " + courtNumber);
                 break;
             }
@@ -138,17 +152,19 @@ public class Booking {
         // Click on Add to Basket
         page.click("(//button[@class='xn-button xn-mute']/following-sibling::button)[3]");
         
-
+        takeScreenshot(page, "Screenshot", "AddedtoBasket.png");
         proceedToCheckout(page);
         
        
         page.waitForTimeout(2000);
+        takeScreenshot(page, "Screenshot", "PayNow.png");
         page.click("text=Pay Now");
         System.out.println("Click on 'Pay Now' - is successful");
         page.waitForTimeout(6000);
 
         Locator confirmationText = page.locator("h1.xn-title");
         if (confirmationText.textContent().equals("Transaction Confirmation")) {
+        	takeScreenshot(page, "Screenshot", "BookingSuccessful.png");
             System.out.println("Booking is successful");
         } else {
             System.out.println("Booking is NOT successful.");
@@ -165,7 +181,7 @@ public class Booking {
         	Locator siteDropdown = page.locator("#xn-site-selector");
         	// Select the option by visible text
         	siteDropdown.selectOption(new SelectOption().setLabel("Macclesfield Leisure Centre"));
-
+        	takeScreenshot(page, "Screenshot", "PreferredSitePopup.png");
         	System.out.println("Selected site: Macclesfield Leisure Centre");
 
             applyButton.click();
@@ -177,11 +193,13 @@ public class Booking {
         Locator acceptButton = page.locator("button.xn-button.xn-cta", new Page.LocatorOptions().setHasText("Accept"));
         if (yesRadio.count() > 0 && yesRadio.isVisible()) {
             yesRadio.check();
+            takeScreenshot(page, "Screenshot", "Cookies_yes.png");
         }
 
         if (yesRadio.count() > 0 && yesRadio.isChecked()) {
             if (acceptButton.count() > 0 && acceptButton.isVisible()) {
                 acceptButton.click();
+                takeScreenshot(page, "Screenshot", "cookies_accpet.png");
                 System.out.println("Accepted Cookies Popup");
             }
         }
@@ -294,6 +312,7 @@ public class Booking {
                 .setTimeout(5000));
 
             if (ctaButton.isVisible()) {
+            	takeScreenshot(page, "Screenshot", "Checkout_cart.png");
                 ctaButton.click();
                 System.out.println("Hovered over the cart and clicked on 'Check-Out' button - is successful");
             } else {
@@ -307,10 +326,58 @@ public class Booking {
         Locator closeIcon = page.locator("(//div[@class='xn-close'])[2]");
 
         if (closeIcon.count() > 0 && closeIcon.first().isVisible()) {
+        	takeScreenshot(page, "Screenshot", "LocationAlert.png");
             closeIcon.first().click();
             System.out.println("Closed the location alert updates");
         } else {
             System.out.println("Location alert close icon not visible or not present.");
+        }
+    }
+    
+        
+    public static void prepareScreenshotDirectory(String directoryName) {
+        try {
+            // Create directory "Screenshot" if it does not exist
+            File screenshotDir = new File(directoryName);
+            if (!screenshotDir.exists()) {
+                screenshotDir.mkdirs();
+                System.out.println("Screenshot directory created: " + screenshotDir.getAbsolutePath());
+            } else {
+                // Delete all files in the directory
+                File[] files = screenshotDir.listFiles();
+                if (files != null) {
+                    for (File file : files) {
+                        if (file.isFile() && file.exists()) {
+                            boolean isDeleted = file.delete();
+                            if (isDeleted) {
+                                System.out.println("Deleted old file: " + file.getAbsolutePath());
+                            } else {
+                                System.err.println("Failed to delete old file: " + file.getAbsolutePath());
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error while preparing screenshot directory: " + e.getMessage());
+        }
+    }
+
+    
+    
+    public static void takeScreenshot(Page page, String directoryName, String fileName) {
+        try {
+            // Create the file path
+            File screenshotFile = new File(directoryName, fileName);
+
+            // Take and save the screenshot
+            page.screenshot(new Page.ScreenshotOptions()
+                .setPath(Paths.get(screenshotFile.getAbsolutePath()))
+                .setFullPage(true));
+
+            System.out.println("Screenshot saved to: " + screenshotFile.getAbsolutePath());
+        } catch (Exception e) {
+            System.err.println("Failed to capture screenshot: " + e.getMessage());
         }
     }
 
