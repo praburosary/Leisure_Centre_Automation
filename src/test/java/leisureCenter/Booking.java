@@ -49,11 +49,7 @@ public class Booking {
         System.out.println("Clicked on Login Button successfully");
         page.waitForTimeout(6000);
         
-        
         closeLocationAlert(page);
-
-
-        
         
         //confirm Login
         Locator loginHeader = page.locator("//h1[@class='xn-title']");
@@ -79,9 +75,9 @@ public class Booking {
         } else {
             System.out.println("'Online Bookings' element not found or not visible.");
         }
-
         
         page.waitForTimeout(2000);
+        
         handlePreferredSitePopup(page);
 
         page.waitForSelector("text=Sport Courts and Pitches", new Page.WaitForSelectorOptions().setTimeout(5000));
