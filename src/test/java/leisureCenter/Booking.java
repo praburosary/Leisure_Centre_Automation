@@ -39,13 +39,9 @@ public class Booking {
         Playwright pw = Playwright.create();
         Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("msedge").setHeadless(true));
         Page page = browser.newPage();
-        
-        
-        //String directoryName = "Screenshot";
+                
         // Prepare the screenshot directory
         prepareScreenshotDirectory("Screenshot");
-
-
 
         page.navigate("https://portal.everybody.org.uk/LhWeb/en/members/home/");
         page.waitForLoadState(LoadState.LOAD);
@@ -85,6 +81,7 @@ public class Booking {
         if (onlineBookings.count() > 0 && onlineBookings.first().isVisible()) {
             onlineBookings.click();
             System.out.println("Clicked on 'Online Bookings'");
+            takeScreenshot(page, "Screenshot", "OnlineBooking.png");
         } else {
             System.out.println("'Online Bookings' element not found or not visible.");
         }
@@ -97,12 +94,14 @@ public class Booking {
 
         page.waitForSelector("text=Sport Courts and Pitches", new Page.WaitForSelectorOptions().setTimeout(10000));
         page.locator("text=Sport Courts and Pitches").click();
+        page.waitForTimeout(4000);
+        takeScreenshot(page, "Screenshot", "Sport Courts and Pitches.png");
         System.out.println("Sport Courts and Pitches button successfully");
 
         page.fill("input[placeholder='Search activities']", "Badminton");
         page.click("#calendar");
         System.out.println("Clicked on the calendar successfully");
-
+        takeScreenshot(page, "Screenshot", "Calendar.png");
         LocalDate targetDate = LocalDate.now(ZoneId.of("Europe/London")).plusDays(8);
         int targetDay = targetDate.getDayOfMonth();        
         selectCalendarDateByDayNumber(page, targetDay);
@@ -235,6 +234,7 @@ public class Booking {
         Locator selectCourtButton = page.locator(selector);
         if (selectCourtButton.count() > 0 && selectCourtButton.first().isVisible()) {
             selectCourtButton.first().click();
+            takeScreenshot(page, "Screenshot", "SelectCourt.png");
             System.out.println("Clicked 'Select Court' for time: " + targetTime);
         } else {
             System.out.println("'Select Court' button not found for time: " + targetTime);
@@ -280,6 +280,7 @@ public class Booking {
                     if (!isNextMonthDisabled) {
                         targetDayElement.first().click();
                         System.out.println("Selected the date: " + dayString + " in the next month.");
+                        
                     } else {
                         System.out.println("Day " + dayString + " found but still disabled in the next month.");
                     }
