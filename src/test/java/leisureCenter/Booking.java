@@ -76,15 +76,19 @@ public class Booking {
             System.out.println("'Online Bookings' element not found or not visible.");
         }
         
-        page.waitForTimeout(2000);
+        page.waitForTimeout(4000);
         
         handlePreferredSitePopup(page);
+        
+        closeLocationAlert(page);
 
         page.waitForSelector("text=Sport Courts and Pitches", new Page.WaitForSelectorOptions().setTimeout(5000));
         page.locator("text=Sport Courts and Pitches").click();
+        System.out.println("Sport Courts and Pitches button successfully");
 
         page.fill("input[placeholder='Search activities']", "Badminton");
         page.click("#calendar");
+        System.out.println("Clicked on the calendar successfully");
 
         LocalDate targetDate = LocalDate.now(ZoneId.of("Europe/London")).plusDays(8);
         int targetDay = targetDate.getDayOfMonth();        
