@@ -50,13 +50,8 @@ public class Booking {
         page.waitForTimeout(6000);
         
         
-        //close Location alert
-        Locator closeIcon = page.locator("(//div[@class='xn-close'])[2]");
+        closeLocationAlert(page);
 
-        if (closeIcon.count() > 0 && closeIcon.first().isVisible()) {
-            closeIcon.first().click();
-            System.out.println("Closed the location alert updates");
-        } 
 
         
         
@@ -73,14 +68,8 @@ public class Booking {
         
         handlePreferredSitePopup(page);
         
-      //close Location alert
-        Locator closeIcon1 = page.locator("(//div[@class='xn-close'])[2]");
+        closeLocationAlert(page);
 
-        if (closeIcon1.count() > 0 && closeIcon1.first().isVisible()) {
-            closeIcon1.first().click();
-            System.out.println("Closed the location alert updates1");
-        } 
-        
         //click on Online Bookings and confirm
         page.waitForSelector("text=Online Bookings", new Page.WaitForSelectorOptions().setTimeout(5000));
         Locator onlineBookings = page.locator("text=Online Bookings");
@@ -193,6 +182,7 @@ public class Booking {
         if (yesRadio.count() > 0 && yesRadio.isChecked()) {
             if (acceptButton.count() > 0 && acceptButton.isVisible()) {
                 acceptButton.click();
+                System.out.println("Accepted Cookies Popup");
             }
         }
     }
@@ -313,6 +303,17 @@ public class Booking {
     }
 
     
+    public static void closeLocationAlert(Page page) {
+        Locator closeIcon = page.locator("(//div[@class='xn-close'])[2]");
+
+        if (closeIcon.count() > 0 && closeIcon.first().isVisible()) {
+            closeIcon.first().click();
+            System.out.println("Closed the location alert updates");
+        } else {
+            System.out.println("Location alert close icon not visible or not present.");
+        }
+    }
+
     
     
     
