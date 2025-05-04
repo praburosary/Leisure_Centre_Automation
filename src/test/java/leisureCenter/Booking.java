@@ -108,7 +108,8 @@ public class Booking {
         LocalDate targetDate = LocalDate.now(ZoneId.of("Europe/London")).plusDays(8);
         int targetDay = targetDate.getDayOfMonth();        
         selectCalendarDateByDayNumber(page, targetDay);
-        takeScreenshot(page, "Screenshot", "12_Selection_of_DesiredDAte.png");
+        page.waitForTimeout(5000);
+        takeScreenshot(page, "Screenshot", "12_Selection_of_DesiredDate.png");
         
         LocalTime timeNow = LocalTime.now(ZoneId.of("Europe/London"));
         System.out.println("Current UK Time now is: " + timeNow);
@@ -241,10 +242,11 @@ public class Booking {
         Locator selectCourtButton = page.locator(selector);
         if (selectCourtButton.count() > 0 && selectCourtButton.first().isVisible()) {
             selectCourtButton.first().click();
-            takeScreenshot(page, "Screenshot", "SelectCourt.png");
+            takeScreenshot(page, "Screenshot", "13_SelectCourt.png");
             System.out.println("Clicked 'Select Court' for time: " + targetTime);
         } else {
             System.out.println("'Select Court' button not found for time: " + targetTime);
+            takeScreenshot(page, "Screenshot", "13_SelectCourtButtonNotFound.png");
         }
     }
     
