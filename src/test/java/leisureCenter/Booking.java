@@ -83,7 +83,7 @@ public class Booking {
             onlineBookings.click();
             page.waitForTimeout(4000);
             System.out.println("Clicked on 'Online Bookings'");
-            takeScreenshot(page, "Screenshot", "08_OnlineBooking.png");
+            takeScreenshot(page, "Screenshot", "08_Clicked_on_OnlineBooking.png");
         } else {
             System.out.println("'Online Bookings' element not found or not visible.");
         }
@@ -96,7 +96,7 @@ public class Booking {
         page.waitForSelector("text=Sport Courts and Pitches", new Page.WaitForSelectorOptions().setTimeout(10000));
         page.locator("text=Sport Courts and Pitches").click();
         page.waitForTimeout(4000);
-        takeScreenshot(page, "Screenshot", "09_SportCourtsandPitches.png");
+        takeScreenshot(page, "Screenshot", "09_Clicked_on_SportCourtsandPitches.png");
         System.out.println("Sport Courts and Pitches button successfully");
 
         page.fill("input[placeholder='Search activities']", "Badminton");
@@ -108,7 +108,7 @@ public class Booking {
         LocalDate targetDate = LocalDate.now(ZoneId.of("Europe/London")).plusDays(8);
         int targetDay = targetDate.getDayOfMonth();        
         selectCalendarDateByDayNumber(page, targetDay);
-        page.waitForTimeout(5000);
+        page.waitForTimeout(8000);
         takeScreenshot(page, "Screenshot", "12_Selection_of_DesiredDate.png");
         
         LocalTime timeNow = LocalTime.now(ZoneId.of("Europe/London"));
@@ -144,8 +144,8 @@ public class Booking {
             if (radioButton.isVisible()) {
                 radioButton.click();
                 page.waitForTimeout(4000);
-                takeScreenshot(page, "Screenshot", "13_Court_selected.png");
-                System.out.println("Clicked on Court " + courtNumber);
+                takeScreenshot(page, "Screenshot", "14_Court_selected.png");
+                System.out.println("Selected the desired Court " + courtNumber);
                 break;
             }
         }
@@ -157,21 +157,21 @@ public class Booking {
         // Click on Add to Basket
         page.click("(//button[@class='xn-button xn-mute']/following-sibling::button)[3]");
         page.waitForTimeout(2000);
-        takeScreenshot(page, "Screenshot", "14_AddedtoBasket.png");
+        takeScreenshot(page, "Screenshot", "15_Clicked_on_AddtoBasket.png");
         proceedToCheckout(page);
         
        
         page.waitForTimeout(2000);
-        takeScreenshot(page, "Screenshot", "16_Ready_to_PayNow.png");
+        takeScreenshot(page, "Screenshot", "17_Ready_to_PayNow.png");
         page.click("text=Pay Now");
         
         System.out.println("Click on 'Pay Now' - is successful");
         page.waitForTimeout(6000);
-        takeScreenshot(page, "Screenshot", "17_Clicked_PayNow.png");
+        takeScreenshot(page, "Screenshot", "18_Clicked_PayNow.png");
         
         Locator confirmationText = page.locator("h1.xn-title");
         if (confirmationText.textContent().equals("Transaction Confirmation")) {
-        	takeScreenshot(page, "Screenshot", "18_BookingSuccessful.png");
+        	takeScreenshot(page, "Screenshot", "19_BookingSuccessful.png");
             System.out.println("Booking is successful");
         } else {
             System.out.println("Booking is NOT successful.");
@@ -200,7 +200,7 @@ public class Booking {
         Locator acceptButton = page.locator("button.xn-button.xn-cta", new Page.LocatorOptions().setHasText("Accept"));
         if (yesRadio.count() > 0 && yesRadio.isVisible()) {
             yesRadio.check();
-            takeScreenshot(page, "Screenshot", "02_Cookies_yes.png");
+            takeScreenshot(page, "Screenshot", "02_Cookies_yes_radioButton_selected.png");
         }
 
         if (yesRadio.count() > 0 && yesRadio.isChecked()) {
@@ -242,7 +242,8 @@ public class Booking {
         Locator selectCourtButton = page.locator(selector);
         if (selectCourtButton.count() > 0 && selectCourtButton.first().isVisible()) {
             selectCourtButton.first().click();
-            takeScreenshot(page, "Screenshot", "13_SelectCourt.png");
+            page.waitForTimeout(4000);
+            takeScreenshot(page, "Screenshot", "13_Clicked_on_SelectCourt_Button.png");
             System.out.println("Clicked 'Select Court' for time: " + targetTime);
         } else {
             System.out.println("'Select Court' button not found for time: " + targetTime);
@@ -322,7 +323,7 @@ public class Booking {
                 .setTimeout(5000));
 
             if (ctaButton.isVisible()) {
-            	takeScreenshot(page, "Screenshot", "15_Checkout_cart.png");
+            	takeScreenshot(page, "Screenshot", "16_Checkout_cart_is_Visible.png");
                 ctaButton.click();
                 System.out.println("Hovered over the cart and clicked on 'Check-Out' button - is successful");
             } else {
