@@ -81,7 +81,7 @@ public class Booking {
         Locator onlineBookings = page.locator("text=Online Bookings");
         if (onlineBookings.count() > 0 && onlineBookings.first().isVisible()) {
             onlineBookings.click();
-            page.waitForTimeout(4000);
+            page.waitForTimeout(8000);
             System.out.println("Clicked on 'Online Bookings'");
             takeScreenshot(page, "Screenshot", "08_Clicked_on_OnlineBooking.png");
         } else {
