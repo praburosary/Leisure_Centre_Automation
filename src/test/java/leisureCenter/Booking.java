@@ -156,7 +156,7 @@ public class Booking {
 
         // Click on Add to Basket
         page.click("(//button[@class='xn-button xn-mute']/following-sibling::button)[3]");
-        page.waitForTimeout(2000);
+        page.waitForTimeout(6000);
         takeScreenshot(page, "Screenshot", "15_Clicked_on_AddtoBasket.png");
         proceedToCheckout(page);
         
@@ -304,7 +304,52 @@ public class Booking {
     }
 
 
+    public static void proceedToCheckout(Page page) {
+        Locator ctaButton = page.locator("//a[@class='xn-button xn-cta']");
+
+        if (ctaButton.isVisible()) {
+            ctaButton.click();
+            System.out.println("Clicked on 'Check-Out' button - is successful");
+        } else {
+            System.out.println("'Check-Out' button not visible initially. Trying to reveal...");
+
+            // Take screenshot before attempting cart icon click
+            takeScreenshot(page, "Screenshot", "16_Checkout_button_not_visible_initially.png");
+
+            // Try to close or wait for interfering modal if known
+            Locator overlay = page.locator("#xn-select-sublocation");
+            if (overlay.isVisible()) {
+                System.out.println("Blocking overlay detected. Waiting to disappear...");
+                overlay.waitFor(new Locator.WaitForOptions()
+                    .setState(WaitForSelectorState.HIDDEN)
+                    .setTimeout(5000));
+            }
+
+            // Click on cart icon forcefully to bypass intercept
+            page.locator("(//div[@data-bind='event: {keypress: toggleBasket}, escapePressed: handleEscapeKeyPressed()']//div)[1]")
+                .click(new Locator.ClickOptions().setForce(true));
+
+            // Optional wait to allow DOM update
+            page.waitForTimeout(2000);
+
+            // Wait for the CTA to appear and become visible
+            ctaButton.waitFor(new Locator.WaitForOptions()
+                .setState(WaitForSelectorState.VISIBLE)
+                .setTimeout(5000));
+
+            if (ctaButton.isVisible()) {
+                takeScreenshot(page, "Screenshot", "16_Checkout_cart_is_Visible.png");
+                ctaButton.click();
+                System.out.println("Hovered over the cart and clicked on 'Check-Out' button - is successful");
+            } else {
+                System.err.println("Check-Out button still not visible after cart interaction");
+            }
+        }
+    }
+
     
+    
+    /*
     public static void proceedToCheckout(Page page) {
         Locator ctaButton = page.locator("//a[@class='xn-button xn-cta']");
 
@@ -332,6 +377,7 @@ public class Booking {
         }
     }
 
+*/
     
     public static void closeLocationAlert(Page page) {
         Locator closeIcon = page.locator("(//div[@class='xn-close'])[2]");
