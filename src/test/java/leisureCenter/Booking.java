@@ -138,7 +138,7 @@ public class Booking {
 
         page.waitForTimeout(3000);
 
-        int[] selectionOrder = {7, 8, 6, 5, 3, 4, 2, 1};
+        int[] selectionOrder = {7, 8, 6, 5, 3, 2, 4, 1};
         for (int courtNumber : selectionOrder) {
             Locator radioButton = page.locator("input[type='radio'][value='" + courtNumber + "']");
             if (radioButton.isVisible()) {
@@ -348,36 +348,7 @@ public class Booking {
     }
 
     
-    
-    /*
-    public static void proceedToCheckout(Page page) {
-        Locator ctaButton = page.locator("//a[@class='xn-button xn-cta']");
 
-        if (ctaButton.isVisible()) {
-            ctaButton.click();
-            System.out.println("Clicked on 'Check-Out' button - is successful");
-        } else {
-            System.out.println("'Check-Out' button not visible initially. Trying to reveal...");
-
-            // Click on cart icon to attempt revealing the checkout button
-            page.click("(//div[@data-bind='event: {keypress: toggleBasket}, escapePressed: handleEscapeKeyPressed()']//div)[1]");
-
-            // Wait for visibility
-            ctaButton.waitFor(new Locator.WaitForOptions()
-                .setState(WaitForSelectorState.VISIBLE)
-                .setTimeout(5000));
-
-            if (ctaButton.isVisible()) {
-            	takeScreenshot(page, "Screenshot", "16_Checkout_cart_is_Visible.png");
-                ctaButton.click();
-                System.out.println("Hovered over the cart and clicked on 'Check-Out' button - is successful");
-            } else {
-                System.out.println("Check-Out button still not visible after cart interaction");
-            }
-        }
-    }
-
-*/
     
     public static void closeLocationAlert(Page page) {
         Locator closeIcon = page.locator("(//div[@class='xn-close'])[2]");
