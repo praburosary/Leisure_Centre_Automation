@@ -37,7 +37,7 @@ public class Booking {
         System.out.println("Today is: " + dayOfWeek + ", Current time: " + currentTime);
 
         Playwright pw = Playwright.create();
-        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("msedge").setHeadless(true));
+        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("msedge").setHeadless(false));
         Page page = browser.newPage();
                 
         // Prepare the screenshot directory
@@ -252,58 +252,102 @@ public class Booking {
     }
     
     
-    
-    public static void selectCalendarDateByDayNumber(Page page, int targetDay) {
-        String dayString = String.valueOf(targetDay);
-        String dayXPath = String.format("//span[text()='%s']", dayString);
-        Locator targetDayElement = page.locator(dayXPath);
-        Locator parentDayElement = targetDayElement.locator("xpath=.."); // Get the parent <td>
-        Locator nextMonthButton = page.locator(".next-month");
+      
 
-        if (targetDayElement.count() > 0 && targetDayElement.first().isVisible()) {
-            String parentClass = parentDayElement.first().getAttribute("class");
-            boolean isDisabled = false;
-            if (parentClass != null && (parentClass.contains("disabled") || parentClass.contains("not-in-month") || parentClass.contains("unavailable") || parentClass.contains("off"))) {
-                isDisabled = true;
-            }
-            if (!isDisabled) {
-                targetDayElement.first().click();
-                System.out.println("Clicked on day: " + targetDay + " in the current month.");
-            } else {
-                System.out.println("Day " + targetDay + " appears disabled in the current month.");
-                nextMonthButton.click();
-                System.out.println("Clicked next month. Retrying for day: " + dayString);
+        public static void selectCalendarDateByDayNumber(Page page, int targetDay) {
+            String dayString = String.valueOf(targetDay);
+            String daySpanXPath = String.format("//span[text()='%s']", dayString);
+            Locator allTargetDaySpans = page.locator(daySpanXPath);
+            Locator nextMonthButton = page.locator(".next-month");
 
-                // Re-locate the target day element using XPath after navigating to the next month
-                targetDayElement = page.locator(String.format("//span[text()='%s']", dayString));
-                parentDayElement = targetDayElement.locator("xpath=..");
+            System.out.println("Attempting to select day: " + targetDay);
 
-                // Wait for the target day to be visible in the next month
-                page.waitForSelector(String.format("//span[text()='%s']", dayString), new Page.WaitForSelectorOptions().setTimeout(3000));
+            // Scenario 1: Look for the target day within the current view
+            // We'll iterate through all occurrences of the targetDay (e.g., two '28's)
+            Locator selectedElement = null;
 
-                if (targetDayElement.count() > 0 && targetDayElement.first().isVisible()) {
-                    String nextMonthParentClass = parentDayElement.first().getAttribute("class");
-                    boolean isNextMonthDisabled = false;
-                    if (nextMonthParentClass != null && (nextMonthParentClass.contains("disabled") || nextMonthParentClass.contains("not-in-month") || nextMonthParentClass.contains("unavailable") || nextMonthParentClass.contains("off"))) {
-                        isNextMonthDisabled = true;
-                    }
-                    if (!isNextMonthDisabled) {
-                        targetDayElement.first().click();
-                        System.out.println("Selected the date: " + dayString + " in the next month.");
-                        
-                    } else {
-                        System.out.println("Day " + dayString + " found but still disabled in the next month.");
-                    }
-                } else {
-                    System.out.println("Day " + dayString + " not found in the next month.");
+            for (int i = 0; i < allTargetDaySpans.count(); i++) {
+                Locator currentDaySpan = allTargetDaySpans.nth(i);
+                Locator parentTd = currentDaySpan.locator("xpath=.."); // Get the parent <td>
+
+                // Ensure the element is visible before checking its attributes
+                if (!currentDaySpan.isVisible()) {
+                    System.out.println("Skipping invisible span for day: " + targetDay);
+                    continue;
+                }
+
+                String parentClass = parentTd.getAttribute("class");
+                boolean isDisabledOrNotInMonth = false;
+
+                if (parentClass != null && (parentClass.contains("disabled") || parentClass.contains("not-in-month") || parentClass.contains("unavailable") || parentClass.contains("off"))) {
+                    isDisabledOrNotInMonth = true;
+                }
+
+                System.out.println("Found day " + targetDay + " (occurrence " + (i + 1) + "). Parent class: '" + parentClass + "'. Is disabled/not-in-month: " + isDisabledOrNotInMonth);
+
+                if (!isDisabledOrNotInMonth) {
+                    // This is an enabled, in-month occurrence
+                    selectedElement = currentDaySpan;
+                    break; // Found a selectable element, no need to check further occurrences in this month
                 }
             }
-        } else {
-            System.out.println("Day " + targetDay + " is either not present or not visible in the current month.");
+
+            if (selectedElement != null) {
+                // Found an enabled date in the current calendar view
+                selectedElement.click();
+                System.out.println("Selected the date: " + targetDay + " in the current month view.");
+            } else {
+                // No enabled occurrence found in the current calendar view (either all were disabled or not found)
+                System.out.println("Day " + targetDay + " not found as enabled in the current month view or all occurrences are disabled.");
+
+                // Proceed to click next month button and retry
+                if (nextMonthButton.count() > 0 && nextMonthButton.isVisible()) {
+                    System.out.println("Clicking next month button to find day: " + targetDay);
+                    nextMonthButton.click();
+                    page.waitForTimeout(500); // Give a small pause for the calendar to update
+
+                    // Re-locate all target day spans after navigating to the next month
+                    allTargetDaySpans = page.locator(daySpanXPath);
+
+                    boolean foundAndSelectedInNextMonth = false;
+                    for (int i = 0; i < allTargetDaySpans.count(); i++) {
+                        Locator currentDaySpan = allTargetDaySpans.nth(i);
+                        Locator parentTd = currentDaySpan.locator("xpath=..");
+
+                        if (!currentDaySpan.isVisible()) {
+                            System.out.println("Skipping invisible span for day: " + targetDay + " in next month.");
+                            continue;
+                        }
+
+                        String parentClass = parentTd.getAttribute("class");
+                        boolean isDisabledOrNotInMonth = false;
+                        if (parentClass != null && (parentClass.contains("disabled") || parentClass.contains("not-in-month") || parentClass.contains("unavailable") || parentClass.contains("off"))) {
+                            isDisabledOrNotInMonth = true;
+                        }
+
+                        System.out.println("Found day " + targetDay + " in next month (occurrence " + (i + 1) + "). Parent class: '" + parentClass + "'. Is disabled/not-in-month: " + isDisabledOrNotInMonth);
+
+                        if (!isDisabledOrNotInMonth) {
+                            currentDaySpan.click();
+                            System.out.println("Selected the date: " + targetDay + " in the next month.");
+                            foundAndSelectedInNextMonth = true;
+                            break;
+                        }
+                    }
+
+                    if (!foundAndSelectedInNextMonth) {
+                        System.out.println("Day " + targetDay + " not found as enabled in the next month either.");
+                    }
+
+                } else {
+                    System.out.println("Next month button not found or not visible.");
+                }
+            }
         }
-    }
-
-
+    
+    
+    
+    
     public static void proceedToCheckout(Page page) {
         Locator ctaButton = page.locator("//a[@class='xn-button xn-cta']");
 
