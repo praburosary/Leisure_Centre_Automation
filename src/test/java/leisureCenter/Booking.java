@@ -99,7 +99,7 @@ public class Booking {
         takeScreenshot(page, "Screenshot", "09_Clicked_on_SportCourtsandPitches.png");
         System.out.println("Sport Courts and Pitches button successfully");
 
-        page.fill("input[placeholder='Search activities']", "Badminton");
+        page.fill("input[placeholder='Search activities']", "badminton");
         page.waitForTimeout(2000);
         takeScreenshot(page, "Screenshot", "10_Filtered_Badminton.png");
         page.click("#calendar");
@@ -114,7 +114,13 @@ public class Booking {
         LocalTime timeNow = LocalTime.now(ZoneId.of("Europe/London"));
         System.out.println("Current UK Time now is: " + timeNow);
 
-        if (timeNow.isAfter(LocalTime.of(8, 39)) && timeNow.isBefore(LocalTime.of(9, 30))) {
+        if (timeNow.isAfter(LocalTime.of(5, 39)) && timeNow.isBefore(LocalTime.of(6, 30))) {
+            clickSelectCourtByTime(page, "06:30");
+        } else if (timeNow.isAfter(LocalTime.of(6, 39)) && timeNow.isBefore(LocalTime.of(7, 30))) {
+            clickSelectCourtByTime(page, "07:30");
+        } else if (timeNow.isAfter(LocalTime.of(7, 39)) && timeNow.isBefore(LocalTime.of(8, 30))) {
+            clickSelectCourtByTime(page, "08:30");
+        } else if (timeNow.isAfter(LocalTime.of(8, 39)) && timeNow.isBefore(LocalTime.of(9, 30))) {
             clickSelectCourtByTime(page, "09:30");
         } else if (timeNow.isAfter(LocalTime.of(9, 39)) && timeNow.isBefore(LocalTime.of(10, 30))) {
             clickSelectCourtByTime(page, "10:30");
@@ -213,9 +219,9 @@ public class Booking {
     }
 
     private void WaitforExactTime() throws InterruptedException {
-        List<String> validTimes = Arrays.asList("09:30", "10:30", "11:30", "12:30", "13:30", "14:30", "15:30", "16:30");
+    	List<String> validTimes = Arrays.asList( "06:30:01", "07:30:01", "08:30:01", "09:30:01", "10:30:01", "11:30:01", "12:30:01", "13:30:01", "14:30:01", "15:30:01", "16:30:01");
         boolean timeMatched = false;
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
         while (!timeMatched) {
             LocalTime currentLocalTime = LocalTime.now(ZoneId.of("Europe/London"));
