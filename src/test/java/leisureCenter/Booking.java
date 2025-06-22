@@ -37,7 +37,7 @@ public class Booking {
         System.out.println("Today is: " + dayOfWeek + ", Current time: " + currentTime);
 
         Playwright pw = Playwright.create();
-        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("msedge").setHeadless(true));
+        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false));
         Page page = browser.newPage();
                 
         // Prepare the screenshot directory
