@@ -4,16 +4,15 @@ on:
   schedule:
     # In BST: 12:40 UTC + 1 hour = 13:40 BST (Every day)
     # Runs Every day: 13:40, 14:40, 15:40
-    # Only on Fridays: 08:40, 09:40
-    # Only on Saturdays: 09:40
     - cron: '40 12 * * 0,1,2,3,4,5,6'
     - cron: '40 13 * * 0,1,2,3,4,5,6'
     - cron: '40 14 * * 0,1,2,3,4,5,6'
+    # Only on Fridays and Saturdays: 08:40, 09:40
     - cron: '40 07 * * 5,6'
     - cron: '40 08 * * 5,6'
-    # Runs on: Monday (1), Wednesday (3), Thursday (4), Friday (5) at 06:40
+    # Runs on Monday (1), Wednesday (3), Thursday (4), Friday (5) at 05:40 UTC
     - cron: '40 05 * * 1,3,4,5'
-    
+
   workflow_dispatch:
 
 jobs:
@@ -36,27 +35,34 @@ jobs:
       - name: Install Playwright Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libnss3 libatk-bridge2.0-0 libgtk-3-0 libxss1 libasound2t64 libgbm1 libxshmfence1
+          sudo apt-get install -y \
+            libnss3 \
+            libatk-bridge2.0-0 \
+            libgtk-3-0 \
+            libxss1 \
+            libasound2t64 \
+            libgbm1 \
+            libxshmfence1
 
       - name: Verify Gradle is installed
         run: gradle --version
 
       - name: Grant execute permission to Gradle wrapper
         run: chmod +x ./gradlew
-        
+
       - name: Clean Build Directory
         run: ./gradlew clean
 
       - name: Run TestNG Tests using Gradle Wrapper
         run: ./gradlew test --stacktrace --info
-      
+
       - name: Upload Playwright Screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-screenshots
           path: Screenshot
-      
+
       - name: List build/reports/tests Contents
         if: always()
         run: ls -R build/reports/tests
@@ -68,10 +74,10 @@ jobs:
           cat build/reports/tests/test/index.html || echo "Report not found"
           echo "XML Test Results:"
           cat build/test-results/test/TEST-*.xml || echo "XML results not found"
-      
+
       - name: Upload TestNG Report
-        uses: actions/upload-artifact@v4
         if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: testng-report
           path: build/reports/testng
