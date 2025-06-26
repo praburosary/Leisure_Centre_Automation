@@ -37,7 +37,7 @@ public class Booking {
         System.out.println("Today is: " + dayOfWeek + ", Current time: " + currentTime);
 
         Playwright pw = Playwright.create();
-        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("msedge").setHeadless(true));
+        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("msedge").setHeadless(false));
         Page page = browser.newPage();
                 
         // Prepare the screenshot directory
@@ -219,7 +219,20 @@ public class Booking {
     }
 
     private void WaitforExactTime() throws InterruptedException {
-    	List<String> validTimes = Arrays.asList( "06:30:01", "07:30:01", "08:30:01", "09:30:01", "10:30:01", "11:30:01", "12:30:01", "13:30:01", "14:30:01", "15:30:01", "16:30:01");
+        List<LocalTime> targetTimes = Arrays.asList(
+            LocalTime.of(6, 30, 1), // Target 06:30:01
+            LocalTime.of(7, 30, 1),
+            LocalTime.of(8, 30, 1),
+            LocalTime.of(9, 30, 1),
+            LocalTime.of(10, 30, 1),
+            LocalTime.of(11, 30, 1), // Target 11:30:01
+            LocalTime.of(12, 30, 1),
+            LocalTime.of(13, 30, 1),
+            LocalTime.of(14, 30, 1),
+            LocalTime.of(15, 30, 1),
+            LocalTime.of(16, 30, 1)
+        );
+
         boolean timeMatched = false;
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
@@ -228,12 +241,18 @@ public class Booking {
             String currentTimeStr = currentLocalTime.format(timeFormatter);
             System.out.println("Current UK time: " + currentTimeStr);
 
-            if (validTimes.contains(currentTimeStr)) {
-                timeMatched = true;
-                System.out.println("Time matched! Proceeding...");
-            } else {
+            for (LocalTime targetTime : targetTimes) {
+                // Check if current time is at or after the target time, within a small window
+                if (currentLocalTime.isAfter(targetTime.minusSeconds(2)) && currentLocalTime.isBefore(targetTime.plusSeconds(2))) {
+                    timeMatched = true;
+                    System.out.println("Time matched (within a 2-second window)! Proceeding...");
+                    break; // Exit the for loop
+                }
+            }
+
+            if (!timeMatched) {
                 System.out.println("Waiting for the correct time...");
-                Thread.sleep(1000);
+                Thread.sleep(500); // Reduce sleep to check more frequently
             }
         }
     }
@@ -376,7 +395,9 @@ public class Booking {
             }
 
             // Click on cart icon forcefully to bypass intercept
-            page.locator("(//div[@data-bind='event: {keypress: toggleBasket}, escapePressed: handleEscapeKeyPressed()']//div)[1]")
+            
+            page.locator("//div[@class='xn-icon']")
+            //page.locator("(//div[@data-bind='event: {keypress: toggleBasket}, escapePressed: handleEscapeKeyPressed()']//div)[1]")
                 .click(new Locator.ClickOptions().setForce(true));
 
             // Optional wait to allow DOM update

@@ -2,12 +2,12 @@
 <testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2025-06-22T13:40:46 BST" name="Default suite" finished-at="2025-06-22T13:45:17 BST" duration-ms="271273">
+  <suite started-at="2025-06-26T12:03:22 BST" name="Default suite" finished-at="2025-06-26T12:31:33 BST" duration-ms="1691116">
     <groups>
     </groups>
-    <test started-at="2025-06-22T13:40:46 BST" name="Default test" finished-at="2025-06-22T13:45:17 BST" duration-ms="271273">
+    <test started-at="2025-06-26T12:03:22 BST" name="Default test" finished-at="2025-06-26T12:31:33 BST" duration-ms="1691116">
       <class name="leisureCenter.Booking">
-        <test-method signature="browser_actions()[pri:0, instance:leisureCenter.Booking@7975d1d8]" started-at="2025-06-22T13:40:46 BST" name="browser_actions" finished-at="2025-06-22T13:45:17 BST" duration-ms="271126" status="PASS">
+        <test-method signature="browser_actions()[pri:0, instance:leisureCenter.Booking@7975d1d8]" started-at="2025-06-26T12:03:22 BST" name="browser_actions" finished-at="2025-06-26T12:31:33 BST" duration-ms="1690961" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- browser_actions -->
