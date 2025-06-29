@@ -37,7 +37,7 @@ public class Booking {
         System.out.println("Today is: " + dayOfWeek + ", Current time: " + currentTime);
 
         Playwright pw = Playwright.create();
-        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("msedge").setHeadless(true));
+        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("msedge").setHeadless(false));
         Page page = browser.newPage();
                 
         // Prepare the screenshot directory
@@ -203,7 +203,8 @@ public class Booking {
 
     private void handleCookiesPopup(Page page) {
         Locator yesRadio = page.locator("input[type='radio'][name='rbGoogle'][value='1']");
-        Locator acceptButton = page.locator("button.xn-button.xn-cta", new Page.LocatorOptions().setHasText("Accept"));
+        //Locator acceptButton = page.locator("button.xn-button.xn-cta", new Page.LocatorOptions().setHasText("Accept"));
+        Locator acceptButton = page.locator("xpath=//button[contains(@class, 'xn-button') and contains(@class, 'xn-cta') and contains(text(), 'Accept')]");
         if (yesRadio.count() > 0 && yesRadio.isVisible()) {
             yesRadio.check();
             takeScreenshot(page, "Screenshot", "02_Cookies_yes_radioButton_selected.png");
