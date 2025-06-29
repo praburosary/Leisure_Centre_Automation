@@ -201,16 +201,17 @@ public class Booking {
         }
     }
 
-    private void handleCookiesPopup(Page page) {
+    private void handleCookiesPopup(Page page) throws InterruptedException {
         Locator yesRadio = page.locator("input[type='radio'][name='rbGoogle'][value='1']");
-        //Locator acceptButton = page.locator("button.xn-button.xn-cta", new Page.LocatorOptions().setHasText("Accept"));
-        Locator acceptButton = page.locator("xpath=//button[contains(@class, 'xn-button') and contains(@class, 'xn-cta') and contains(text(), 'Accept')]");
+        
         if (yesRadio.count() > 0 && yesRadio.isVisible()) {
             yesRadio.check();
             takeScreenshot(page, "Screenshot", "02_Cookies_yes_radioButton_selected.png");
         }
 
-        if (yesRadio.count() > 0 && yesRadio.isChecked()) {
+        Locator acceptButton = page.locator("button.xn-button.xn-cta", new Page.LocatorOptions().setHasText("Accept"));
+        Thread.sleep(3000);
+        if (yesRadio.count() > 0 && yesRadio.isChecked()) {        	       	
             if (acceptButton.count() > 0 && acceptButton.isVisible()) {
                 acceptButton.click();
                 takeScreenshot(page, "Screenshot", "03_cookies_accpeted_closed.png");
