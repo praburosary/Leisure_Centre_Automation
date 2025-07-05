@@ -10,7 +10,7 @@ on:
     # Only on Fridays and Saturdays: 08:40, 09:40
     - cron: '40 07 * * 5,6'
     - cron: '40 08 * * 5,6'
-    # Runs on Sunday (0), Tuesday (2), Wednesday (3), Thursday (4) at 05:40 UTC
+    # Runs on Sunday (0), Tuesday (2), Wednesday (3), Thursday (4) at 05:40, 06:40 UTC
     - cron: '40 05 * * 0,2,3,4'
     - cron: '40 06 * * 0,2,3,4'
 

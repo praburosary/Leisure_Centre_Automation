@@ -2,18 +2,18 @@
 <testng-results ignored="0" total="1" passed="0" failed="1" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2025-06-29T22:58:02 BST" name="Default suite" finished-at="2025-06-29T22:59:03 BST" duration-ms="60564">
+  <suite started-at="2025-07-02T20:02:09 BST" name="Default suite" finished-at="2025-07-02T20:03:09 BST" duration-ms="60315">
     <groups>
     </groups>
-    <test started-at="2025-06-29T22:58:02 BST" name="Default test" finished-at="2025-06-29T22:59:03 BST" duration-ms="60564">
+    <test started-at="2025-07-02T20:02:09 BST" name="Default test" finished-at="2025-07-02T20:03:09 BST" duration-ms="60315">
       <class name="leisureCenter.Booking">
-        <test-method signature="browser_actions()[pri:0, instance:leisureCenter.Booking@7975d1d8]" started-at="2025-06-29T22:58:02 BST" name="browser_actions" finished-at="2025-06-29T22:59:03 BST" duration-ms="60399" status="FAIL">
+        <test-method signature="browser_actions()[pri:0, instance:leisureCenter.Booking@7975d1d8]" started-at="2025-07-02T20:02:09 BST" name="browser_actions" finished-at="2025-07-02T20:03:09 BST" duration-ms="60164" status="FAIL">
           <exception class="java.lang.AssertionError">
             <message>
-              <![CDATA[No slot selection matched for the current time: 22:59:03.363320700]]>
+              <![CDATA[No slot selection matched for the current time: 20:03:09.324578500]]>
             </message>
             <full-stacktrace>
-              <![CDATA[java.lang.AssertionError: No slot selection matched for the current time: 22:59:03.363320700
+              <![CDATA[java.lang.AssertionError: No slot selection matched for the current time: 20:03:09.324578500
 at org.testng.Assert.fail(Assert.java:110)
 at leisureCenter.Booking.browser_actions(Booking.java:142)
 at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
