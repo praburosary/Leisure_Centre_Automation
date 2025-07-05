@@ -60,14 +60,14 @@ public class Booking {
         String password = "";
         
         if (timeNow.isAfter(LocalTime.of(15, 39)) && timeNow.isBefore(LocalTime.of(16, 30))) {
-            username = "prabhureuben@gmail.com";
-            password = "Rosary08**";
+            username = "Lorenzomichaeluk@gmail.com";
+            password = "Appleuk@123";
         } else if (timeNow.isAfter(LocalTime.of(14, 39)) && timeNow.isBefore(LocalTime.of(15, 30))) {
-            username = "Tamilank@gmail.com";
-            password = "Sports@123";
+            username = "ponshirly@gmail.com";
+            password = "Iniya2015$";
         } else if (timeNow.isAfter(LocalTime.of(13, 39)) && timeNow.isBefore(LocalTime.of(14, 30))) {
-            username = "thina_sbm@hotmail.com";
-            password = "Jason#007";
+            username = "";
+            password = "";
         } else {
         	
         	//username = "prabhureuben@gmail.com";
@@ -167,7 +167,7 @@ public class Booking {
 
         page.waitForTimeout(3000);
 
-        int[] selectionOrder = {7, 8, 6, 5, 3, 2, 4, 1};
+        int[] selectionOrder = {6, 8, 5, 1, 4, 2};
         for (int courtNumber : selectionOrder) {
             Locator radioButton = page.locator("input[type='radio'][value='" + courtNumber + "']");
             if (radioButton.isVisible()) {
