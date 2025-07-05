@@ -51,9 +51,33 @@ public class Booking {
         
         handleCookiesPopup(page);
         handlePreferredSitePopup(page);
+        
+        LocalTime timeNow = LocalTime.now(ZoneId.of("Europe/London"));
+        System.out.println("Current UK Time now is: " + timeNow);
+        
+     // Determine credentials based on UK time
+        String username = "";
+        String password = "";
+        
+        if (timeNow.isAfter(LocalTime.of(15, 39)) && timeNow.isBefore(LocalTime.of(16, 30))) {
+            username = "Lorenzomichaeluk@gmail.com";
+            password = "Appleuk@123";
+        } else if (timeNow.isAfter(LocalTime.of(14, 39)) && timeNow.isBefore(LocalTime.of(15, 30))) {
+            username = "ponshirly@gmail.com";
+            password = "Iniya2015$";
+        } else if (timeNow.isAfter(LocalTime.of(13, 39)) && timeNow.isBefore(LocalTime.of(14, 30))) {
+            username = "";
+            password = "";
+        } else {
+        	
+        	//username = "prabhureuben@gmail.com";
+            //password = "Rosary08**";
+            throw new RuntimeException("No matching login window for current time: " + timeNow);
+        }
+        
 
-        page.type("#xn-Username", "prabhureuben@gmail.com");
-        page.type("#xn-Password", "Rosary08**");
+        page.type("#xn-Username", username);
+        page.type("#xn-Password", password);
         page.click("#login");
         System.out.println("Clicked on Login Button successfully");
         page.waitForTimeout(6000);
@@ -111,8 +135,7 @@ public class Booking {
         page.waitForTimeout(8000);
         takeScreenshot(page, "Screenshot", "12_Selection_of_DesiredDate.png");
         
-        LocalTime timeNow = LocalTime.now(ZoneId.of("Europe/London"));
-        System.out.println("Current UK Time now is: " + timeNow);
+        
 
         if (timeNow.isAfter(LocalTime.of(5, 39)) && timeNow.isBefore(LocalTime.of(6, 30))) {
             clickSelectCourtByTime(page, "06:30");
@@ -144,7 +167,7 @@ public class Booking {
 
         page.waitForTimeout(3000);
 
-        int[] selectionOrder = {7, 8, 6, 5, 3, 2, 4, 1};
+        int[] selectionOrder = {6, 8, 5, 4, 2, 1};
         for (int courtNumber : selectionOrder) {
             Locator radioButton = page.locator("input[type='radio'][value='" + courtNumber + "']");
             if (radioButton.isVisible()) {
@@ -201,15 +224,17 @@ public class Booking {
         }
     }
 
-    private void handleCookiesPopup(Page page) {
+    private void handleCookiesPopup(Page page) throws InterruptedException {
         Locator yesRadio = page.locator("input[type='radio'][name='rbGoogle'][value='1']");
-        Locator acceptButton = page.locator("button.xn-button.xn-cta", new Page.LocatorOptions().setHasText("Accept"));
+        
         if (yesRadio.count() > 0 && yesRadio.isVisible()) {
             yesRadio.check();
             takeScreenshot(page, "Screenshot", "02_Cookies_yes_radioButton_selected.png");
         }
 
-        if (yesRadio.count() > 0 && yesRadio.isChecked()) {
+        Locator acceptButton = page.locator("button.xn-button.xn-cta", new Page.LocatorOptions().setHasText("Accept"));
+        Thread.sleep(3000);
+        if (yesRadio.count() > 0 && yesRadio.isChecked()) {        	       	
             if (acceptButton.count() > 0 && acceptButton.isVisible()) {
                 acceptButton.click();
                 takeScreenshot(page, "Screenshot", "03_cookies_accpeted_closed.png");
@@ -219,7 +244,20 @@ public class Booking {
     }
 
     private void WaitforExactTime() throws InterruptedException {
-    	List<String> validTimes = Arrays.asList( "06:30:01", "07:30:01", "08:30:01", "09:30:01", "10:30:01", "11:30:01", "12:30:01", "13:30:01", "14:30:01", "15:30:01", "16:30:01");
+        List<LocalTime> targetTimes = Arrays.asList(
+            LocalTime.of(6, 30, 1), // Target 06:30:01
+            LocalTime.of(7, 30, 1),
+            LocalTime.of(8, 30, 1),
+            LocalTime.of(9, 30, 1),
+            LocalTime.of(10, 30, 1),
+            LocalTime.of(11, 30, 1), // Target 11:30:01
+            LocalTime.of(12, 30, 1),
+            LocalTime.of(13, 30, 1),
+            LocalTime.of(14, 30, 1),
+            LocalTime.of(15, 30, 1),
+            LocalTime.of(16, 30, 1)
+        );
+
         boolean timeMatched = false;
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
@@ -228,12 +266,18 @@ public class Booking {
             String currentTimeStr = currentLocalTime.format(timeFormatter);
             System.out.println("Current UK time: " + currentTimeStr);
 
-            if (validTimes.contains(currentTimeStr)) {
-                timeMatched = true;
-                System.out.println("Time matched! Proceeding...");
-            } else {
+            for (LocalTime targetTime : targetTimes) {
+                // Check if current time is at or after the target time, within a small window
+                if (currentLocalTime.isAfter(targetTime.minusSeconds(2)) && currentLocalTime.isBefore(targetTime.plusSeconds(2))) {
+                    timeMatched = true;
+                    System.out.println("Time matched (within a 2-second window)! Proceeding...");
+                    break; // Exit the for loop
+                }
+            }
+
+            if (!timeMatched) {
                 System.out.println("Waiting for the correct time...");
-                Thread.sleep(1000);
+                Thread.sleep(500); // Reduce sleep to check more frequently
             }
         }
     }
@@ -376,7 +420,9 @@ public class Booking {
             }
 
             // Click on cart icon forcefully to bypass intercept
-            page.locator("(//div[@data-bind='event: {keypress: toggleBasket}, escapePressed: handleEscapeKeyPressed()']//div)[1]")
+            
+            page.locator("//div[@class='xn-icon']")
+            //page.locator("(//div[@data-bind='event: {keypress: toggleBasket}, escapePressed: handleEscapeKeyPressed()']//div)[1]")
                 .click(new Locator.ClickOptions().setForce(true));
 
             // Optional wait to allow DOM update
