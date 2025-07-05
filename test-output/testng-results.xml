@@ -2,20 +2,19 @@
 <testng-results ignored="0" total="1" passed="0" failed="1" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2025-07-02T20:02:09 BST" name="Default suite" finished-at="2025-07-02T20:03:09 BST" duration-ms="60315">
+  <suite started-at="2025-07-05T19:07:31 BST" name="Default suite" finished-at="2025-07-05T19:07:50 BST" duration-ms="19398">
     <groups>
     </groups>
-    <test started-at="2025-07-02T20:02:09 BST" name="Default test" finished-at="2025-07-02T20:03:09 BST" duration-ms="60315">
+    <test started-at="2025-07-05T19:07:31 BST" name="Default test" finished-at="2025-07-05T19:07:50 BST" duration-ms="19398">
       <class name="leisureCenter.Booking">
-        <test-method signature="browser_actions()[pri:0, instance:leisureCenter.Booking@7975d1d8]" started-at="2025-07-02T20:02:09 BST" name="browser_actions" finished-at="2025-07-02T20:03:09 BST" duration-ms="60164" status="FAIL">
-          <exception class="java.lang.AssertionError">
+        <test-method signature="browser_actions()[pri:0, instance:leisureCenter.Booking@7975d1d8]" started-at="2025-07-05T19:07:31 BST" name="browser_actions" finished-at="2025-07-05T19:07:50 BST" duration-ms="19276" status="FAIL">
+          <exception class="java.lang.RuntimeException">
             <message>
-              <![CDATA[No slot selection matched for the current time: 20:03:09.324578500]]>
+              <![CDATA[No matching login window for current time: 19:07:50.984197100]]>
             </message>
             <full-stacktrace>
-              <![CDATA[java.lang.AssertionError: No slot selection matched for the current time: 20:03:09.324578500
-at org.testng.Assert.fail(Assert.java:110)
-at leisureCenter.Booking.browser_actions(Booking.java:142)
+              <![CDATA[java.lang.RuntimeException: No matching login window for current time: 19:07:50.984197100
+at leisureCenter.Booking.browser_actions(Booking.java:75)
 at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -46,7 +45,7 @@ at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:293)
 at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
 ]]>
             </full-stacktrace>
-          </exception> <!-- java.lang.AssertionError -->
+          </exception> <!-- java.lang.RuntimeException -->
           <reporter-output>
           </reporter-output>
         </test-method> <!-- browser_actions -->

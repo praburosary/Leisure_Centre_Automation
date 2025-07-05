@@ -51,9 +51,33 @@ public class Booking {
         
         handleCookiesPopup(page);
         handlePreferredSitePopup(page);
+        
+        LocalTime timeNow = LocalTime.now(ZoneId.of("Europe/London"));
+        System.out.println("Current UK Time now is: " + timeNow);
+        
+     // Determine credentials based on UK time
+        String username = "";
+        String password = "";
+        
+        if (timeNow.isAfter(LocalTime.of(15, 39)) && timeNow.isBefore(LocalTime.of(16, 30))) {
+            username = "prabhureuben@gmail.com";
+            password = "Rosary08**";
+        } else if (timeNow.isAfter(LocalTime.of(14, 39)) && timeNow.isBefore(LocalTime.of(15, 30))) {
+            username = "Tamilank@gmail.com";
+            password = "Sports@123";
+        } else if (timeNow.isAfter(LocalTime.of(13, 39)) && timeNow.isBefore(LocalTime.of(14, 30))) {
+            username = "thina_sbm@hotmail.com";
+            password = "Jason#007";
+        } else {
+        	
+        	//username = "prabhureuben@gmail.com";
+            //password = "Rosary08**";
+            throw new RuntimeException("No matching login window for current time: " + timeNow);
+        }
+        
 
-        page.type("#xn-Username", "prabhureuben@gmail.com");
-        page.type("#xn-Password", "Rosary08**");
+        page.type("#xn-Username", username);
+        page.type("#xn-Password", password);
         page.click("#login");
         System.out.println("Clicked on Login Button successfully");
         page.waitForTimeout(6000);
@@ -111,8 +135,7 @@ public class Booking {
         page.waitForTimeout(8000);
         takeScreenshot(page, "Screenshot", "12_Selection_of_DesiredDate.png");
         
-        LocalTime timeNow = LocalTime.now(ZoneId.of("Europe/London"));
-        System.out.println("Current UK Time now is: " + timeNow);
+        
 
         if (timeNow.isAfter(LocalTime.of(5, 39)) && timeNow.isBefore(LocalTime.of(6, 30))) {
             clickSelectCourtByTime(page, "06:30");
