@@ -37,7 +37,7 @@ public class Booking {
         System.out.println("Today is: " + dayOfWeek + ", Current time: " + currentTime);
 
         Playwright pw = Playwright.create();
-        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("msedge").setHeadless(true));
+        Browser browser = pw.chromium().launch(new BrowserType.LaunchOptions().setChannel("msedge").setHeadless(false));
         Page page = browser.newPage();
                 
         // Prepare the screenshot directory
@@ -210,7 +210,9 @@ public class Booking {
     }
 
     private void handlePreferredSitePopup(Page page) {
-        Locator applyButton = page.locator("button.xn-button.xn-cta", new Page.LocatorOptions().setHasText("Apply"));
+        //Locator applyButton = page.locator("button.xn-button.xn-cta", new Page.LocatorOptions().setHasText("Apply"));
+    	Locator applyButton = page.locator("xpath=//div[@class='xn-buttons']/button[text()='Apply' and contains(@class, 'xn-button') and contains(@class, 'xn-cta')]");
+    	//Locator applyButton = page.locator("xpath=//button[text()='Apply']");
         if (applyButton.isVisible()) {
         	
         	// Locate the dropdown using its ID
